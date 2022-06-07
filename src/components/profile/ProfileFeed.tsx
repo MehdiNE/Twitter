@@ -1,5 +1,5 @@
 import { Avatar } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BsArrowLeft, BsCalendar3, BsPerson } from "react-icons/bs";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import Post from "../Post";
@@ -11,6 +11,7 @@ import { useRecoilState } from "recoil";
 import { profileModalState } from "../../atoms/modalAtom";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
+import Popover from "@mui/material/Popover";
 
 interface Props {
   userData: {
@@ -24,6 +25,9 @@ interface Props {
       };
       age: string;
       website: string;
+      avatar: string;
+      displayName: string;
+      timestamp: any;
     };
   };
 
@@ -45,25 +49,37 @@ function ProfileFeed({ userData, posts, loading, currentUser }: Props) {
   const [isOpen, setIsOpen] = useRecoilState(profileModalState);
   const navigate = useNavigate();
 
-  const { userTag } = useTag(currentUser?.displayName);
+  const { userTag } = useTag(userData[0]?.displayName);
 
-  const unixTimestamp = +currentUser?.metadata?.createdAt;
+  const unixTimestamp = userData[0]?.timestamp?.seconds;
 
   useEffect(() => {
-    document.title = `${currentUser?.displayName} | Twitter By Mahdi`;
-  }, []);
+    document.title = `${userData[0]?.displayName} | Twitter By Mahdi`;
+  }, [userData]);
+
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
+  const handlePopoverOpen = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
 
   return (
-    <div className="flex-grow border-l border-r border-gray-700 max-w-2xl sm:ml-[73px] xl:ml-[370px]">
-      <div className="text-[#d9d9d9] flex items-center sm:justify-start py-2 px-3 sticky top-0 z-50 space-x-7 bg-black">
+    <div className="flex-grow border-l dark:text-[#d9d9d9] text-black border-r dark:border-gray-700 border-gray-200 max-w-2xl sm:ml-[73px] xl:ml-[370px]">
+      <div className="flex items-center sm:justify-start py-2 px-3 sticky top-0 z-50 space-x-7 dark:bg-black/80 bg-slate-100/80 backdrop-blur-md">
         <BsArrowLeft
-          className="text-white cursor-pointer hoverAnimation"
+          className="cursor-pointer hoverAnimation"
           onClick={() => {
             navigate("/");
           }}
         />
-        <div className="text-white text-xl font-bold">
-          {currentUser?.displayName}
+        <div className="text-xl font-bold">
+          {userData[0]?.displayName}
           <span className="inline-block mt-1 ml-1 align-text-bottom text-lg">
             {userData[0]?.verified && <GoVerified color="white" />}
           </span>
@@ -82,17 +98,16 @@ function ProfileFeed({ userData, posts, loading, currentUser }: Props) {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="border-b border-gray-700">
+          <div className="border-b dark:border-gray-700 border-gray-200">
             <div className="flex flex-row justify-between ml-4 sm:ml-5">
               <Avatar
-                src={currentUser?.photoURL}
+                src={userData[0]?.avatar}
                 sx={{
                   width: "140px",
                   height: "140px",
-                  border: "4px solid black",
                 }}
-                alt={currentUser?.displayName}
-                className="-mt-20"
+                alt={userData[0]?.displayName}
+                className="-mt-20 dark:border-4 dark:border-black border-4"
               />
               {currentUser?.uid === userData[0]?.id ? (
                 <div className="mt-4 mr-4">
@@ -116,17 +131,68 @@ function ProfileFeed({ userData, posts, loading, currentUser }: Props) {
               )}
             </div>
             <div className="ml-4 sm:ml-5 mt-4">
-              <div className="text-white text-xl font-bold">
-                {currentUser?.displayName}
+              <div className="text-xl font-bold">
+                {userData[0]?.displayName}
                 <span className="inline-block mt-1 ml-1 align-text-bottom text-lg">
-                  {userData[0]?.verified && <GoVerified color="white" />}
+                  {userData[0]?.verified && (
+                    <div>
+                      <GoVerified
+                        className="-mt-5"
+                        color="white"
+                        aria-owns={open ? "mouse-over-popover" : undefined}
+                        aria-haspopup="true"
+                        onMouseEnter={handlePopoverOpen}
+                        onMouseLeave={handlePopoverClose}
+                      />
+                      <Popover
+                        id="mouse-over-popover"
+                        PaperProps={{
+                          style: {
+                            backgroundColor: "black",
+                            color: "white",
+                            boxShadow: "0px 0px 7px 2px #7f7e7ec5",
+                            borderRadius: "20px",
+                            padding: "14px 5px",
+                          },
+                        }}
+                        sx={{
+                          pointerEvents: "none",
+                        }}
+                        open={open}
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                          vertical: "center",
+                          horizontal: "left",
+                        }}
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "left",
+                        }}
+                        onClose={handlePopoverClose}
+                        disableRestoreFocus
+                      >
+                        <div className=" w-96 flex justify-center items-center flex-col text-center space-y-3">
+                          <GoVerified size={32} color="white" />
+                          <p className="text-2xl font-bold">
+                            Account information
+                          </p>
+                          <p className="opacity-60">
+                            This account is verified because it’s notable in
+                            government, news, entertainment, or another
+                            designated category.
+                          </p>
+                        </div>
+                      </Popover>
+                    </div>
+                  )}
                 </span>
               </div>
-              <h4 className="text-[#6e767d]">@{userTag}</h4>
+              <h4 className="text-[#556673]">@{userTag}</h4>
             </div>
 
+            {/* #6e767d */}
             <div className="space-y-2 text-sm">
-              <div className="text-white px-2 sm:px-4 ml-1 text-left">
+              <div className="px-2 sm:px-4 ml-1 text-left">
                 <p className="text-left my-4">{userData[0]?.bio}</p>
                 <div className="flex flex-wrap text-[#6e767d] text-sm tracking-tight">
                   <div className="flex space-x-4 mb-3 mr-3">
@@ -136,25 +202,31 @@ function ProfileFeed({ userData, posts, loading, currentUser }: Props) {
                     </div>
                     <div className="flex space-x-1">
                       <BsPerson size={18} />
-                      <p className="-mt-0.5">{userData[0]?.age} years old</p>
+                      <p className="-mt-0.5">
+                        {userData[0]?.age}{" "}
+                        {userData[0]?.age === "not selected" ? "" : "years old"}
+                      </p>
                     </div>
                   </div>
                   <div className="flex space-x-1 ml-0 sm:ml-3">
                     <BsCalendar3 size={18} />
                     <span className="-mt-0.5">
-                      Joined <Moment format="D MMMM y">{unixTimestamp}</Moment>
+                      Joined{" "}
+                      <Moment unix format="D MMMM y">
+                        {unixTimestamp}
+                      </Moment>
                     </span>
                   </div>
                 </div>
               </div>
-              <div className="text-white sm:px-4 ml-4 sm:ml-1">
-                <div className="flex space-x-7 text-[#6e767d] text-sm tracking-tight">
+              <div className="sm:px-4 ml-4 sm:ml-1">
+                <div className="flex space-x-7 text-[#556673] text-sm tracking-tight">
                   <div className="flex space-x-0.5">
                     <IoAttachOutline size={20} />
                     <a
                       href={userData[0]?.website}
                       target="_blank"
-                      className=" text-blue-300 text-sm"
+                      className=" text-blue-400 text-sm"
                       rel="noreferrer"
                     >
                       {userData[0]?.website}
@@ -164,14 +236,14 @@ function ProfileFeed({ userData, posts, loading, currentUser }: Props) {
               </div>
             </div>
 
-            <div className="text-white px-4 py-2 ml-2 mb-4">
+            <div className="px-4 py-2 ml-2 mb-4">
               <div className="flex space-x-7 text-[#6e767d] text-sm tracking-tight">
                 <div className="flex space-x-1">
-                  <p className="text-white">1000</p>
+                  <p className="dark:text-white text-black">1000</p>
                   <p>Following</p>
                 </div>
                 <div className="flex space-x-1">
-                  <p className="text-white">10000</p>
+                  <p className="dark:text-white text-black">10000</p>
                   <p>Follwers</p>
                 </div>
               </div>

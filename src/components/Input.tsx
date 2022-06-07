@@ -106,7 +106,7 @@ function Input() {
 
   return (
     <div
-      className={`border-b border-gray-700 p-3 flex space-x-3 ${
+      className={`border-b-2 dark:border-gray-700 border-gray-200 p-3 flex space-x-3 dark:text-[#d9d9d9] text-black ${
         loading && "opacity-60"
       }`}
     >
@@ -122,7 +122,7 @@ function Input() {
             onChange={(e) => setInput(e.target.value)}
             placeholder="What's happening?"
             maxLength={300}
-            className="bg-transparent outline-none text-[#d9d9d9] text-lg placeholder-gray-500 tracking-wide w-full min-h-[50px]"
+            className="bg-transparent outline-none text-lg placeholder-gray-500 tracking-wide w-full min-h-[50px]"
           />
 
           {selectedFile && (

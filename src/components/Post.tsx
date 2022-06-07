@@ -10,7 +10,6 @@ import {
 } from "react-icons/hi";
 import { FaRetweet } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import {
   collection,
   deleteDoc,
@@ -22,11 +21,10 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/config";
 import Moment from "react-moment";
-import likeAnimation from "../7596-like.json";
 import { useRecoilState } from "recoil";
 import { modalState, postIdState } from "../atoms/modalAtom";
-import Lottie from "lottie-react";
 import { Avatar } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function Post({ post, id, postPage }: any) {
   const [likes, setLikes] = useState([]);
@@ -35,8 +33,9 @@ function Post({ post, id, postPage }: any) {
   const [postId, setPostId] = useRecoilState(postIdState);
   const [comments, setComments] = useState([]);
 
-  const { currentUser } = useAuth();
   const navigate = useNavigate();
+
+  const { currentUser } = useAuth();
 
   useEffect(
     () =>
@@ -78,26 +77,40 @@ function Post({ post, id, postPage }: any) {
   return (
     <>
       <div
-        className="p-3 flex cursor-pointer border-b border-gray-700"
+        className="p-3 flex cursor-pointer border-b dark:border-gray-700 border-gray-200"
         onClick={() => navigate(`/${id}`)}
       >
         {!postPage && (
-          <Avatar
-            src={post?.userImg}
-            alt=""
-            className="mr-4"
-            sx={{ width: 50, height: 50 }}
-          />
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/profile/${post?.id}`);
+            }}
+          >
+            <Avatar
+              src={post?.userImg}
+              alt=""
+              className="mr-4"
+              sx={{ width: 50, height: 50 }}
+            />
+          </div>
         )}
         <div className="flex flex-col space-y-2 w-full">
           <div className={`flex ${!postPage && "justify-between"}`}>
             {postPage && (
-              <Avatar src={post?.userImg} alt="avatar" className="mr-4" />
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/profile/${post?.id}`);
+                }}
+              >
+                <Avatar src={post?.userImg} alt="avatar" className="mr-4" />
+              </div>
             )}
             <div className="text-[#6e767d]">
               <div className="inline-block group">
                 <h4
-                  className={`font-bold text-[15px] sm:text-base text-[#d9d9d9] group-hover:underline ${
+                  className={`font-bold text-[15px] sm:text-base dark:text-[#d9d9d9] text-black group-hover:underline ${
                     !postPage && "inline-block"
                   }`}
                 >

@@ -1,4 +1,3 @@
-import React from "react";
 import { BsTwitter } from "react-icons/bs";
 
 export default function Splash() {

@@ -1,5 +1,4 @@
-import { addDoc, collection, doc, setDoc, updateDoc } from "firebase/firestore";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   BsEyeFill,
   BsEyeSlashFill,
@@ -10,19 +9,10 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { HiOutlineAtSymbol, HiOutlineLockClosed } from "react-icons/hi";
 import { Link } from "react-router-dom";
-import { auth, db, storage } from "../firebase/config";
-import { useAuth } from "../contexts/AuthContext";
-import {
-  getDownloadURL,
-  ref,
-  uploadBytes,
-  uploadString,
-} from "firebase/storage";
-import { updateProfile } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { Alert, Avatar, Divider, Typography } from "@mui/material";
 import { useSignup } from "../hooks/useSignup";
+import useTitle from "../hooks/useTitle";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -51,9 +41,7 @@ function Signup() {
     signup(email, password, displayName, avatar);
   };
 
-  useEffect(() => {
-    document.title = "Signup | Twitter By Mahdi";
-  }, []);
+  useTitle("Signup | Twitter By Mahdi");
 
   return (
     <div className="flex">

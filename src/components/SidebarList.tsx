@@ -1,4 +1,3 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
 
 interface Props {
@@ -9,7 +8,7 @@ interface Props {
 
 function SidebarList({ text, Icon, link }: Props) {
   return (
-    <div className="text-[#d9d9d9] flex items-center justify-center xl:justify-start text-xl space-x-3 hoverAnimation ">
+    <div className="dark:text-[#d9d9d9] text-black flex items-center justify-center xl:justify-start text-xl space-x-3 hoverAnimation ">
       {link ? (
         <NavLink
           to={link}

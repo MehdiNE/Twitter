@@ -6,6 +6,7 @@ import { BsEyeFill, BsEyeSlashFill, BsGithub } from "react-icons/bs";
 import ClipLoader from "react-spinners/ClipLoader";
 import { Alert, Divider, Typography } from "@mui/material";
 import { useLogin } from "../hooks/useLogin";
+import useTitle from "../hooks/useTitle";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -19,10 +20,7 @@ function Login() {
     login({ email, password });
   };
 
-  useEffect(() => {
-    document.title = "Login | Twitter By Mahdi";
-  }, []);
-
+  useTitle("Login | Twitter By Mahdi");
   return (
     <div className="flex">
       <div className="w-2/4 hidden sm:block">

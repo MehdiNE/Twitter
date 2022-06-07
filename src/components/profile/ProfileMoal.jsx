@@ -1,16 +1,22 @@
-import React, { useMemo, useState, useRef } from "react";
+import { useMemo, useState, useRef } from "react";
 import { Box, Fade, Modal, Backdrop, Avatar } from "@mui/material";
 import countryList from "react-select-country-list";
 import { MdOutlineAddAPhoto } from "react-icons/md";
-import { BsPlusLg } from "react-icons/bs";
+import { BsClipboard, BsPlusLg } from "react-icons/bs";
 import { useRecoilState } from "recoil";
 import { profileModalState } from "../../atoms/modalAtom";
 import { useAuth } from "../../contexts/AuthContext";
 import Select from "react-select";
-import { addDoc, collection, doc, setDoc, updateDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { doc, updateDoc } from "firebase/firestore";
 import { auth, db, storage } from "../../firebase/config";
 import { updateProfile } from "firebase/auth";
+import Compressor from "compressorjs";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+  uploadString,
+} from "firebase/storage";
 
 function ProfileMoal({ userData }) {
   const { currentUser } = useAuth();
@@ -19,6 +25,8 @@ function ProfileMoal({ userData }) {
   const [website, setWebsite] = useState(userData[0]?.website);
   const [age, setAge] = useState(userData[0]?.age);
   const [loading, setLoading] = useState(false);
+  const [header, setHeader] = useState(null);
+  const [headerSrc, setHeaderSrc] = useState("");
 
   // location
   const [value, setValue] = useState("");
@@ -43,19 +51,19 @@ function ProfileMoal({ userData }) {
   };
 
   //change header image
-  const [header, setHeader] = useState();
-  const headerFilePickerRef = useRef();
 
-  const addHeader = (e) => {
-    const reader = new FileReader();
-    if (e.target.files[0]) {
-      reader.readAsDataURL(e.target.files[0]);
+  function showPreview(event) {
+    const file = event.target.files[0];
+
+    if (file) {
+      setHeader(file);
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setHeaderSrc(reader.result);
+      };
     }
-
-    reader.onload = (readerEvent) => {
-      setHeader(readerEvent.target.result);
-    };
-  };
+  }
 
   //onSubmit
   const handleSubmit = async (e) => {
@@ -65,6 +73,41 @@ function ProfileMoal({ userData }) {
 
     const docRef = doc(db, "users", auth?.currentUser?.uid);
     const stringAge = age.toString();
+
+    if (avatar) {
+      const avatarRef = ref(storage, `avatars/${currentUser?.uid}/image`);
+      await uploadString(avatarRef, avatar, "data_url");
+      const avatarDownloadURL = await getDownloadURL(avatarRef);
+      updateDoc(docRef, {
+        avatar: avatarDownloadURL,
+      });
+      await updateProfile(currentUser, {
+        displayName: name,
+        photoURL: avatarDownloadURL,
+      });
+    }
+
+    // await uploadString(avatarRef, avatar, "data_url").then(async () => {
+    //   const avatarDownloadURL = await getDownloadURL(avatarRef);
+    // });
+
+    if (header) {
+      new Compressor(header, {
+        quality: 0.7,
+        async success(result) {
+          setHeaderSrc("");
+          setHeader(null);
+          const headerRef = ref(storage, `headers/${userData[0]?.id}/image`);
+          uploadBytesResumable(headerRef, result).then(() => {
+            getDownloadURL(headerRef).then((downloadURL) => {
+              updateDoc(docRef, {
+                headerPic: downloadURL,
+              });
+            });
+          });
+        },
+      });
+    }
 
     try {
       await updateDoc(docRef, {
@@ -82,6 +125,7 @@ function ProfileMoal({ userData }) {
 
     setLoading(false);
     setIsOpen(false);
+    window.location.reload(true);
   };
 
   //modal
@@ -122,7 +166,7 @@ function ProfileMoal({ userData }) {
         <Fade in={isOpen}>
           <Box sx={style}>
             <form onSubmit={handleSubmit}>
-              <div className="text-white flex justify-between p-3">
+              <div className="text-[#d9d9d9] flex justify-between p-3">
                 <div className="space-x-10 flex">
                   <BsPlusLg
                     className="rotate-45 cursor-pointer mt-1.5"
@@ -152,7 +196,7 @@ function ProfileMoal({ userData }) {
               <div className="w-full h-44 relative">
                 {header ? (
                   <img
-                    src={header}
+                    src={headerSrc}
                     alt="banner"
                     className="w-full h-full object-cover brightness-90 block"
                   />
@@ -164,18 +208,21 @@ function ProfileMoal({ userData }) {
                   />
                 )}
 
-                <div
-                  className="cursor-pointer absolute top-1/3 left-2/4 p-2 -ml-5 bg-[#4c4e4f] hover:bg-opacity-60 bg-opacity-80 rounded-full"
-                  onClick={() => headerFilePickerRef.current.click()}
-                >
-                  <MdOutlineAddAPhoto color="white" size={24} />
+                <div className="cursor-pointer absolute top-1/3 left-2/4 p-2 -ml-5 bg-[#4c4e4f] hover:bg-opacity-60 bg-opacity-80 rounded-full">
+                  <label
+                    style={{ cursor: "pointer", height: 24 }}
+                    htmlFor="image"
+                  >
+                    <MdOutlineAddAPhoto color="white" size={24} />
+                  </label>
                 </div>
                 <input
+                  id="image"
+                  style={{ display: "none" }}
+                  accept="image/*"
                   type="file"
-                  ref={headerFilePickerRef}
-                  hidden
-                  onChange={addHeader}
                   multiple={false}
+                  onChange={showPreview}
                 />
               </div>
 
@@ -215,16 +262,17 @@ function ProfileMoal({ userData }) {
                   type="file"
                   ref={avatarFilePickerRef}
                   hidden
+                  accept="image/*"
                   onChange={addAvatar}
                   multiple={false}
                 />
               </div>
 
-              <div className="w-full flex justify-center items-center flex-col space-y-4 pb-7">
+              <div className="w-full flex justify-center items-center flex-col space-y-4 pb-7 text-[#d9d9d9]">
                 <div className="w-[90%]">
                   <label
                     htmlFor="base-input"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    className="block mb-2 text-sm font-medium"
                   >
                     User Name
                   </label>
@@ -240,7 +288,7 @@ function ProfileMoal({ userData }) {
                 <div className="w-[90%]">
                   <label
                     htmlFor="large-input"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    className="block mb-2 text-sm font-medium"
                   >
                     bio
                   </label>
@@ -258,7 +306,7 @@ function ProfileMoal({ userData }) {
                     <div className="w-1/2">
                       <label
                         htmlFor="base-input"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                        className="block mb-2 text-sm font-medium"
                       >
                         Age
                       </label>
@@ -273,11 +321,12 @@ function ProfileMoal({ userData }) {
                       />
                     </div>
                     <div className="w-1/2">
-                      <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                      <span className="block mb-2 text-sm font-medium">
                         location
                       </span>
                       <Select
                         options={options}
+                        defaultInputValue={userData[0]?.location?.label}
                         value={value}
                         onChange={changeHandler}
                       />
@@ -288,18 +337,32 @@ function ProfileMoal({ userData }) {
                 <div className="w-[90%]">
                   <label
                     htmlFor="base-input"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    className="block mb-2 text-sm font-medium"
                   >
                     Website
                   </label>
-                  <input
-                    value={website}
-                    onChange={(e) => setWebsite(e.target.value)}
-                    type="text"
-                    id="base-input"
-                    placeholder="Example: https://www.youtube.com"
-                    className="w-full bg-[#050527] border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+                      <button
+                        type="button"
+                        className="p-1"
+                        onClick={() => {
+                          setWebsite("https://www.youtube.com");
+                        }}
+                      >
+                        <BsClipboard color="white" />
+                      </button>
+                    </span>
+                    <input
+                      value={website}
+                      onChange={(e) => setWebsite(e.target.value)}
+                      type="url"
+                      pattern="https://.*"
+                      id="base-input"
+                      placeholder="Example: https://www.youtube.com"
+                      className="w-full py-2 pl-10 bg-[#050527] border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
+                  </div>
                 </div>
               </div>
             </form>
@@ -311,3 +374,16 @@ function ProfileMoal({ userData }) {
 }
 
 export default ProfileMoal;
+// const [header, setHeader] = useState();
+// const headerFilePickerRef = useRef();
+
+// const addHeader = (e) => {
+//   const reader = new FileReader();
+//   if (e.target.files[0]) {
+//     reader.readAsDataURL(e.target.files[0]);
+//   }
+
+//   reader.onload = (readerEvent) => {
+//     setHeader(readerEvent.target.result);
+//   };
+// };

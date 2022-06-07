@@ -1,9 +1,10 @@
 import { Alert, Button } from "@mui/material";
 import { sendPasswordResetEmail } from "firebase/auth";
-import React, { useState } from "react";
+import { useState } from "react";
 import { HiOutlineAtSymbol } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { auth } from "../firebase/config";
+import useTitle from "../hooks/useTitle";
 
 function ForgetPassword() {
   const [email, setEmail] = useState("");
@@ -22,6 +23,8 @@ function ForgetPassword() {
         console.log(err);
       });
   };
+
+  useTitle("Reset password | Twitter By Mahdi");
 
   return (
     <div className="flex justify-center items-center flex-col text-white h-screen">

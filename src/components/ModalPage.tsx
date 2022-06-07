@@ -41,15 +41,14 @@ const style = {
 };
 
 export default function TransitionsModal() {
-  const [open, setOpen] = useState(true);
   const [showGif, setShowGif] = useState(false);
   const [gifUrl, setGifUrl] = useState("");
   const [emojis, setEmojis] = useState(false);
   const [post, setPost] = useState<any>();
   const [comment, setComment] = useState("");
+
   const [isOpen, setIsOpen] = useRecoilState(modalState);
-  const [postId, setPostId] = useRecoilState(postIdState);
-  const handleOpen = () => setOpen(true);
+  const [postId] = useRecoilState(postIdState);
   const handleClose = () => setIsOpen(false);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -128,7 +127,6 @@ export default function TransitionsModal() {
 
   return (
     <div>
-      {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
