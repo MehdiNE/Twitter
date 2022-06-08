@@ -20,8 +20,11 @@ import { ClipLoader } from "react-spinners";
 import { useGetUser } from "../hooks/useGetUser";
 import { useAuth } from "../contexts/AuthContext";
 import ThemeSelector from "./ThemeSelector";
+import { useRecoilState } from "recoil";
+import { lightModeState } from "../atoms/modalAtom";
 
 function Sidebar() {
+  const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
   const { logout, error, isLoading } = useLogout();
   const { GetUser, isLoadingUser, userData } = useGetUser();
   const { userTag } = useTag(userData[0]?.displayName);
@@ -62,7 +65,11 @@ function Sidebar() {
       <button className="hidden xl:inline ml-auto bg-[#1d9bf0] text-white rounded-full w-56 h-[52px] text-lg font-bold shadow-md hover:bg-[#1a8cd8]">
         Tweet
       </button>
-      <div className="text-[#d9d9d9] flex items-center justify-center mt-auto py-2 hoverAnimation xl:ml-auto xl:-mr-5">
+      <div
+        className={`text-[#d9d9d9] flex items-center justify-center mt-auto py-2 hoverAnimation xl:ml-auto xl:-mr-5 ${
+          lightTheme ? "text-black" : "text-[#d9d9d9]"
+        }`}
+      >
         {isLoadingUser && (
           <div className="text-center">
             <ClipLoader color="#1DA1F2" size={30} />
@@ -77,9 +84,7 @@ function Sidebar() {
               className="xl:mr-2.5"
             />
             <div className="hidden xl:inline leading-5">
-              <h4 className="font-bold xl:ml-2 dark:text-[#d9d9d9] text-black">
-                {userData[0]?.displayName}
-              </h4>
+              <h4 className="font-bold xl:ml-2 ">{userData[0]?.displayName}</h4>
               <p className="text-[#6e767d] xl:ml-1.5">@{userTag}</p>
             </div>
             <button
@@ -89,7 +94,7 @@ function Sidebar() {
               aria-expanded={open ? "true" : undefined}
               onClick={handleClick}
             >
-              <BsThreeDots className="h-5 hidden xl:inline ml-10 dark:text-[#d9d9d9] text-black" />
+              <BsThreeDots className="h-5 hidden xl:inline ml-10" />
             </button>
             <Menu
               id="basic-menu"

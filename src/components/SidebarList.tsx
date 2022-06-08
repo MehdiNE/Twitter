@@ -1,4 +1,6 @@
 import { NavLink } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { lightModeState } from "../atoms/modalAtom";
 
 interface Props {
   text: string;
@@ -7,8 +9,14 @@ interface Props {
 }
 
 function SidebarList({ text, Icon, link }: Props) {
+  const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
+
   return (
-    <div className="dark:text-[#d9d9d9] text-black flex items-center justify-center xl:justify-start text-xl space-x-3 hoverAnimation ">
+    <div
+      className={`${
+        lightTheme ? "text-black" : "text-[#d9d9d9]"
+      } flex items-center justify-center xl:justify-start text-xl space-x-3 hoverAnimation `}
+    >
       {link ? (
         <NavLink
           to={link}

@@ -25,7 +25,11 @@ import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { useTag } from "../hooks/useTag";
 const ReactGiphySearchbox = require("react-giphy-searchbox").default;
 
-function Input() {
+interface Props {
+  lightTheme: boolean;
+}
+
+function Input({ lightTheme }: Props) {
   const [input, setInput] = useState("");
   const [emojis, setEmojis] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -106,9 +110,11 @@ function Input() {
 
   return (
     <div
-      className={`border-b-2 dark:border-gray-700 border-gray-200 p-3 flex space-x-3 dark:text-[#d9d9d9] text-black ${
-        loading && "opacity-60"
-      }`}
+      className={`border-b-2 p-3 flex space-x-3 ${
+        lightTheme
+          ? "border-gray-200 text-black"
+          : "border-gray-700 text-[#d9d9d9]"
+      } ${loading && "opacity-60"}`}
     >
       <Avatar
         src={currentUser?.photoURL}
@@ -171,6 +177,7 @@ function Input() {
                     ref={filePickerRef}
                     hidden
                     onChange={addImage}
+                    accept="image/*"
                   />
                 </div>
               ) : (

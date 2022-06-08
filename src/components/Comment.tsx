@@ -9,6 +9,7 @@ import {
 import Moment from "react-moment";
 
 function Comment({ comment, id }: any) {
+  console.log(comment);
   return (
     <div className="p-3 flex cursor-pointer border-b border-gray-700">
       <Avatar src={comment?.userImg} alt="" className="mr-4" />
@@ -35,17 +36,21 @@ function Comment({ comment, id }: any) {
             <HiDotsHorizontal className="h-5 text-[#6e767d] group-hover:text-[#1d9bf0]" />
           </div>
         </div>
+        {comment?.gif || comment?.image ? (
+          <>
+            <img
+              src={comment?.gif}
+              alt="gif"
+              className="rounded-2xl max-h-[700px] object-cover mr-2"
+            />
+            <img
+              src={comment?.image}
+              alt="gif"
+              className="rounded-2xl max-h-[700px] object-cover mr-2"
+            />
+          </>
+        ) : null}
 
-        <img
-          src={comment?.gif}
-          alt="gif"
-          className="rounded-2xl max-h-[700px] object-cover mr-2"
-        />
-        <img
-          src={comment?.image}
-          alt="gif"
-          className="rounded-2xl max-h-[700px] object-cover mr-2"
-        />
         <div className="text-[#6e767d] flex justify-between w-10/12">
           <div className="icon group">
             <HiOutlineChat className="h-5 group-hover:text-[#1d9bf0]" />

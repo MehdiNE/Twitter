@@ -26,7 +26,7 @@ import { modalState, postIdState } from "../atoms/modalAtom";
 import { Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-function Post({ post, id, postPage }: any) {
+function Post({ post, id, postPage, lightTheme }: any) {
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState(false);
   const [isOpen, setIsOpen] = useRecoilState(modalState);
@@ -77,7 +77,9 @@ function Post({ post, id, postPage }: any) {
   return (
     <>
       <div
-        className="p-3 flex cursor-pointer border-b dark:border-gray-700 border-gray-200"
+        className={`p-3 flex cursor-pointer border-b ${
+          lightTheme ? "border-gray-200" : "border-gray-700"
+        }`}
         onClick={() => navigate(`/${id}`)}
       >
         {!postPage && (
@@ -107,12 +109,12 @@ function Post({ post, id, postPage }: any) {
                 <Avatar src={post?.userImg} alt="avatar" className="mr-4" />
               </div>
             )}
-            <div className="text-[#6e767d]">
+            <div className="text-[#7c8186]">
               <div className="inline-block group">
                 <h4
-                  className={`font-bold text-[15px] sm:text-base dark:text-[#d9d9d9] text-black group-hover:underline ${
+                  className={`font-bold text-[15px] sm:text-base group-hover:underline ${
                     !postPage && "inline-block"
-                  }`}
+                  } ${lightTheme ? "text-black" : "text-[#d9d9d9]"}`}
                 >
                   {post?.username}
                 </h4>

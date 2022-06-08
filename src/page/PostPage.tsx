@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
-import { modalState } from "../atoms/modalAtom";
+import { dimModeState, lightModeState, modalState } from "../atoms/modalAtom";
 import { useRecoilState } from "recoil";
 import TransitionsModal from "../components/ModalPage";
 import Comment from "../components/Comment";
@@ -21,10 +21,11 @@ function PostPage() {
   const [isOpen] = useRecoilState(modalState);
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
+  const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
+  const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
   const navigate = useNavigate();
 
   let { id }: any = useParams();
-  console.log(id);
 
   useEffect(
     () =>
@@ -48,10 +49,24 @@ function PostPage() {
 
   return (
     <div>
-      <main className="dark:bg-black bg-white min-w-full min-h-screen flex max-w-[1500px] mx-auto">
+      <main
+        className={`dark:bg-black min-w-full min-h-screen flex max-w-[1500px] mx-auto ${
+          lightTheme && "bg-white"
+        } ${dimTheme && "bg-[#15202b]"}`}
+      >
         <Sidebar />
-        <div className="flex-grow border-l border-r dark:border-gray-700 border-gray-200 max-w-2xl sm:ml-[73px] xl:ml-[370px]">
-          <div className="flex items-center px-1.5 py-2 border-b dark:border-gray-700 border-gray-200 dark:text-[#d9d9d9] text-black font-semibold text-xl gap-x-4 sticky top-0 z-50 dark:bg-black/80 bg-slate-100/80 backdrop-blur-md">
+        <div
+          className={`flex-grow border-l border-r max-w-2xl sm:ml-[73px] xl:ml-[370px] ${
+            lightTheme ? "border-gray-200" : "border-gray-700"
+          }`}
+        >
+          <div
+            className={`flex items-center px-1.5 py-2 border-b dark:  font-semibold text-xl gap-x-4 sticky top-0 z-50 dark:bg-black/80  backdrop-blur-md ${
+              lightTheme
+                ? "border-gray-200 text-black bg-slate-100/80"
+                : "border-gray-700 text-[#d9d9d9]"
+            } ${dimTheme && "bg-[#15202b] bg-opacity-80"}`}
+          >
             <div
               className="hoverAnimation w-9 h-9 flex items-center justify-center xl:px-0"
               onClick={() => navigate("/")}

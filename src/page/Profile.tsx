@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { profileModalState } from "../atoms/modalAtom";
+import {
+  dimModeState,
+  lightModeState,
+  profileModalState,
+} from "../atoms/modalAtom";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import ProfileFeed from "../components/profile/ProfileFeed";
 import ProfileMoal from "../components/profile/ProfileMoal";
@@ -16,6 +20,8 @@ function Profile() {
   const [loading, setLoading] = useState(false);
   const [isOpen] = useRecoilState(profileModalState);
   const { currentUser } = useAuth();
+  const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
+  const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
   let { id }: any = useParams();
 
   const userData = users.map((data: any) => data.data());
@@ -51,13 +57,19 @@ function Profile() {
   }, [currentUser.uid, id]);
 
   return (
-    <main className="dark:bg-black bg-white min-w-full min-h-screen flex max-w-[1500px] mx-auto">
+    <main
+      className={`dark:bg-black  min-w-full min-h-screen flex max-w-[1500px] mx-auto ${
+        dimTheme && "bg-[#15202b]"
+      } ${lightTheme && "bg-white"}`}
+    >
       <Sidebar />
       <ProfileFeed
         userData={userData}
         posts={posts}
         loading={loading}
         currentUser={currentUser}
+        dimTheme={dimTheme}
+        lightTheme={lightTheme}
       />
       <RightSidebar />
 

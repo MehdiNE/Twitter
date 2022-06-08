@@ -24,7 +24,7 @@ function App() {
 
   return (
     <div className={darkTheme ? "dark" : ""}>
-      <Offline className="min-w-screen h-screen dark:bg-black text-white flex justify-center items-center">
+      <Offline className="min-w-screen h-screen bg-black text-white flex justify-center items-center">
         <div className="w-screen h-screen text-white flex justify-center items-center flex-col text-2xl">
           <h1>You are offline!</h1>
           <img

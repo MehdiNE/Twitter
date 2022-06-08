@@ -43,9 +43,19 @@ interface Props {
       createdAt: string;
     };
   };
+
+  dimTheme: boolean;
+  lightTheme: boolean;
 }
 
-function ProfileFeed({ userData, posts, loading, currentUser }: Props) {
+function ProfileFeed({
+  userData,
+  posts,
+  loading,
+  currentUser,
+  dimTheme,
+  lightTheme,
+}: Props) {
   const [isOpen, setIsOpen] = useRecoilState(profileModalState);
   const navigate = useNavigate();
 
@@ -70,10 +80,23 @@ function ProfileFeed({ userData, posts, loading, currentUser }: Props) {
   const open = Boolean(anchorEl);
 
   return (
-    <div className="flex-grow border-l dark:text-[#d9d9d9] text-black border-r dark:border-gray-700 border-gray-200 max-w-2xl sm:ml-[73px] xl:ml-[370px]">
-      <div className="flex items-center sm:justify-start py-2 px-3 sticky top-0 z-50 space-x-7 dark:bg-black/80 bg-slate-100/80 backdrop-blur-md">
+    <div
+      className={`flex-grow border-l border-r max-w-2xl sm:ml-[73px] xl:ml-[370px] ${
+        dimTheme && "bg-[#15202b]"
+      } ${
+        lightTheme
+          ? "text-black border-gray-200 bg-white"
+          : "text-[#d9d9d9] border-gray-700 "
+      }`}
+    >
+      <div
+        className={`flex items-center sm:justify-start py-2 px-3 sticky top-0 z-40 space-x-7 dark:bg-black/80  backdrop-blur-md ${
+          dimTheme && "bg-[#15202b] bg-opacity-80"
+        } ${lightTheme && "bg-slate-100/80 text-black border-gray-200"}`}
+      >
         <BsArrowLeft
-          className="cursor-pointer hoverAnimation"
+          size={18}
+          className="cursor-pointer text-white"
           onClick={() => {
             navigate("/");
           }}
@@ -98,7 +121,11 @@ function ProfileFeed({ userData, posts, loading, currentUser }: Props) {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="border-b dark:border-gray-700 border-gray-200">
+          <div
+            className={`border-b ${
+              lightTheme ? " border-gray-200" : "border-gray-700"
+            }`}
+          >
             <div className="flex flex-row justify-between ml-4 sm:ml-5">
               <Avatar
                 src={userData[0]?.avatar}
@@ -107,15 +134,21 @@ function ProfileFeed({ userData, posts, loading, currentUser }: Props) {
                   height: "140px",
                 }}
                 alt={userData[0]?.displayName}
-                className="-mt-20 dark:border-4 dark:border-black border-4"
+                className={`-mt-20 border-4 border-black ${
+                  lightTheme && "border-white"
+                }`}
               />
               {currentUser?.uid === userData[0]?.id ? (
                 <div className="mt-4 mr-4">
                   <button
                     onClick={() => setIsOpen(true)}
-                    className="relative rounded-full inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+                    className={`relative rounded-full inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800`}
                   >
-                    <span className="relative rounded-full px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-black group-hover:bg-opacity-0">
+                    <span
+                      className={`relative rounded-full px-5 py-2.5 transition-all ease-in duration-75 dark:bg-black group-hover:bg-opacity-0 ${
+                        dimTheme && "bg-[#15202b] text-white"
+                      } ${lightTheme && "bg-white"}`}
+                    >
                       Edit profile
                     </span>
                   </button>
@@ -123,7 +156,11 @@ function ProfileFeed({ userData, posts, loading, currentUser }: Props) {
               ) : (
                 <div className="mt-4 mr-4">
                   <button className="relative rounded-full inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-                    <span className="relative rounded-full px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-black group-hover:bg-opacity-0">
+                    <span
+                      className={`relative rounded-full px-5 py-2.5 transition-all ease-in duration-75 dark:bg-black group-hover:bg-opacity-0 ${
+                        dimTheme && "bg-[#15202b] text-white"
+                      } ${lightTheme && "bg-white"}`}
+                    >
                       Follow
                     </span>
                   </button>
@@ -131,7 +168,11 @@ function ProfileFeed({ userData, posts, loading, currentUser }: Props) {
               )}
             </div>
             <div className="ml-4 sm:ml-5 mt-4">
-              <div className="text-xl font-bold">
+              <div
+                className={`text-xl font-bold ${
+                  lightTheme ? "text-black" : "text-white"
+                }`}
+              >
                 {userData[0]?.displayName}
                 <span className="inline-block mt-1 ml-1 align-text-bottom text-lg">
                   {userData[0]?.verified && (
@@ -187,14 +228,14 @@ function ProfileFeed({ userData, posts, loading, currentUser }: Props) {
                   )}
                 </span>
               </div>
-              <h4 className="text-[#556673]">@{userTag}</h4>
+              <h4 className="text-[#979fa5]">@{userTag}</h4>
             </div>
 
             {/* #6e767d */}
             <div className="space-y-2 text-sm">
               <div className="px-2 sm:px-4 ml-1 text-left">
                 <p className="text-left my-4">{userData[0]?.bio}</p>
-                <div className="flex flex-wrap text-[#6e767d] text-sm tracking-tight">
+                <div className="flex flex-wrap text-[#7e8388] text-sm tracking-tight">
                   <div className="flex space-x-4 mb-3 mr-3">
                     <div className="flex space-x-1">
                       <HiOutlineLocationMarker size={18} />
@@ -239,11 +280,15 @@ function ProfileFeed({ userData, posts, loading, currentUser }: Props) {
             <div className="px-4 py-2 ml-2 mb-4">
               <div className="flex space-x-7 text-[#6e767d] text-sm tracking-tight">
                 <div className="flex space-x-1">
-                  <p className="dark:text-white text-black">1000</p>
+                  <p className={`${lightTheme ? "text-black" : "text-white"}`}>
+                    1000
+                  </p>
                   <p>Following</p>
                 </div>
                 <div className="flex space-x-1">
-                  <p className="dark:text-white text-black">10000</p>
+                  <p className={`${lightTheme ? "text-black" : "text-white"}`}>
+                    10000
+                  </p>
                   <p>Follwers</p>
                 </div>
               </div>

@@ -4,11 +4,15 @@ import { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+import { useRecoilState } from "recoil";
+import { dimModeState, lightModeState } from "../../atoms/modalAtom";
 import { db } from "../../firebase/config";
 
 function RightSidebar() {
   const [users, setUsers] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
+  const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
+  const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,18 +31,32 @@ function RightSidebar() {
 
   return (
     <div className="hidden lg:inline ml-8 xl:w-[450px] py-1 space-y-5 mb-4">
-      <div className="sticky top-0 py-1.5 dark:bg-black bg-white z-50 w-11/12 xl:w-9/12">
-        <div className="flex items-center dark:bg-[#202327] bg-[#f7f9f9] p-3 rounded-full relative">
+      <div
+        className={`sticky top-0 py-1.5 dark:bg-black  z-50 w-11/12 xl:w-9/12  ${
+          lightTheme && "bg-white"
+        }'} ${dimTheme && "bg-[#15202b"} `}
+      >
+        <div
+          className={`flex items-center  p-3 rounded-full relative ${
+            lightTheme ? "bg-[#f7f9f9]" : "bg-[#202327]"
+          }`}
+        >
           <BsSearch className="text-gray-500 h-5 z-50" />
           <input
             type="text"
-            className="bg-transparent placeholder-gray-500 outline-none dark:text-[#d9d9d9] text-black absolute inset-0 pl-11 border border-transparent w-full focus:border-[#1d9bf0] rounded-full focus:dark:bg-black focus:bg-[#f7f9f9] focus:shadow-lg"
+            className={`bg-transparent placeholder-gray-500 outline-none dark:text-[#d9d9d9] text-black absolute inset-0 pl-11 border border-transparent w-full focus:border-[#1d9bf0] rounded-full focus:dark:bg-black focus:bg-[#f7f9f9] focus:shadow-lg ${
+              dimTheme && "focus:bg-[#273340] bg-[#273340] text-[#d9d9d9]"
+            }`}
             placeholder="Search Twitter"
           />
         </div>
       </div>
 
-      <div className="dark:text-[#d9d9d9] text-black space-y-3 dark:bg-[#15181c] bg-[#f7f9f9] pt-2 rounded-xl w-11/12 xl:w-9/12">
+      <div
+        className={`dark:text-[#d9d9d9] space-y-3 dark:bg-[#15181c]  pt-2 rounded-xl w-11/12 xl:w-9/12 ${
+          lightTheme && "text-black bg-[#f7f9f9]"
+        } ${dimTheme && "bg-[#1e2732] text-[#d9d9d9]"}`}
+      >
         <h4 className="font-bold text-xl px-4">What's happening</h4>
         {/* {trendingResults.map((result, index) => (
           <Trending key={index} result={result} />
@@ -48,7 +66,11 @@ function RightSidebar() {
         </button>
       </div>
 
-      <div className="dark:text-[#d9d9d9] text-black space-y-3 dark:bg-[#15181c] bg-[#f7f9f9] pt-2 rounded-xl w-11/12 xl:w-9/12">
+      <div
+        className={`dark:text-[#d9d9d9] space-y-3 dark:bg-[#15181c] pt-2 rounded-xl w-11/12 xl:w-9/12 ${
+          lightTheme && "text-black bg-[#f7f9f9]"
+        } ${dimTheme && "bg-[#1e2732] text-[#d9d9d9]"}`}
+      >
         {isLoading && (
           <div className="text-center mt-4">
             <ClipLoader color="#1DA1F2" size={30} />
@@ -79,7 +101,11 @@ function RightSidebar() {
                       ?.toLocaleLowerCase()}
                   </h5>
                 </div>
-                <button className="ml-auto bg-black dark:bg-white text-[#d9d9d9] dark:text-black  rounded-full font-bold text-sm py-1.5 px-3.5">
+                <button
+                  className={`ml-auto  dark:  dark:  rounded-full font-bold text-sm py-1.5 px-3.5 ${
+                    lightTheme ? "bg-black text-white" : "bg-white text-black"
+                  }`}
+                >
                   Follow
                 </button>
               </div>

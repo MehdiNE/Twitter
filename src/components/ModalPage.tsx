@@ -38,6 +38,11 @@ const style = {
   width: 700,
   border: "none",
   outline: "none",
+  "@media (max-width:780px)": {
+    width: "100%",
+    height: "100%",
+    borderRadius: "0",
+  },
 };
 
 export default function TransitionsModal() {
@@ -288,8 +293,6 @@ export default function TransitionsModal() {
                               onSelect={addEmoji}
                               style={{
                                 position: "relative",
-                                // marginTop: "465px",
-                                // marginLeft: -40,
                                 maxWidth: "320px",
                                 borderRadius: "20px",
                                 zIndex: 10,

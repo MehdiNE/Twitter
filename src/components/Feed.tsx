@@ -6,7 +6,12 @@ import { db } from "../firebase/config";
 import Post from "./Post";
 import { ClipLoader } from "react-spinners";
 
-function Feed() {
+interface Props {
+  lightTheme: boolean;
+  dimTheme: boolean;
+}
+
+function Feed({ lightTheme, dimTheme }: Props) {
   const [posts, setPosts] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<null | string>(null);
@@ -33,14 +38,24 @@ function Feed() {
   }, []);
 
   return (
-    <div className="flex-grow border-l border-r dark:border-gray-700 border-gray-200 max-w-2xl sm:ml-[73px] xl:ml-[370px]">
-      <div className="dark:text-[#d9d9d9] text-black flex items-center sm:justify-between py-2 px-3 sticky top-0 z-50 dark:bg-black/80 bg-slate-50/80 backdrop-blur-md dark:border-gray-700 border-gray-200">
+    <div
+      className={`flex-grow border-l border-r max-w-2xl sm:ml-[73px] xl:ml-[370px] ${
+        lightTheme ? "border-gray-200" : "border-gray-700"
+      }`}
+    >
+      <div
+        className={`flex items-center sm:justify-between py-2 px-3 sticky top-0 z-50 backdrop-blur-md dark:bg-black/80 ${
+          lightTheme
+            ? "text-black bg-slate-50/80 border-gray-200"
+            : "border-gray-700 text-[#d9d9d9]"
+        } ${dimTheme && "bg-[#15202b] bg-opacity-80"}`}
+      >
         <h2 className="text-lg sm:text-xl font-bold">Home</h2>
         <div className="hoverAnimation w-9 h-9 flex items-center justify-center xl:px-0 ml-auto">
           <HiOutlineSparkles className="h-5 w-5" />
         </div>
       </div>
-      <Input />
+      <Input lightTheme={lightTheme} />
 
       {error && <div>{error}</div>}
 
@@ -51,7 +66,12 @@ function Feed() {
       ) : (
         <div className="pb-72">
           {posts.map((post: any) => (
-            <Post post={post.data()} key={post.id} id={post.id} />
+            <Post
+              post={post.data()}
+              key={post.id}
+              id={post.id}
+              lightTheme={lightTheme}
+            />
           ))}
         </div>
       )}

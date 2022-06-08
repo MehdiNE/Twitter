@@ -51,7 +51,6 @@ function ProfileMoal({ userData }) {
   };
 
   //change header image
-
   function showPreview(event) {
     const file = event.target.files[0];
 
@@ -86,10 +85,6 @@ function ProfileMoal({ userData }) {
         photoURL: avatarDownloadURL,
       });
     }
-
-    // await uploadString(avatarRef, avatar, "data_url").then(async () => {
-    //   const avatarDownloadURL = await getDownloadURL(avatarRef);
-    // });
 
     if (header) {
       new Compressor(header, {
