@@ -9,6 +9,7 @@ import Profile from "./page/Profile";
 import { Offline, Online } from "react-detect-offline";
 import { useRecoilState } from "recoil";
 import { darkModeState } from "./atoms/modalAtom";
+import Messages from "./page/Messages";
 
 const Home = React.lazy(() => import("./page/Home"));
 const PostPage = React.lazy(() => import("./page/PostPage"));
@@ -17,6 +18,7 @@ const Login = React.lazy(() => import("./page/Login"));
 //use redux toolkit
 //add copy to clipboard functionality
 //add share functionality
+//follow system alert
 
 function App() {
   const { currentUser } = useAuth();
@@ -88,6 +90,7 @@ function App() {
             }
           />
           <Route path="/resetpassword" element={<ForgetPassword />} />
+          <Route path="/messages/:id" element={<Messages />} />
 
           <Route
             path="*"

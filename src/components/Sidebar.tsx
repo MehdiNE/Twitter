@@ -22,12 +22,18 @@ import { useAuth } from "../contexts/AuthContext";
 import ThemeSelector from "./ThemeSelector";
 import { useRecoilState } from "recoil";
 import { lightModeState } from "../atoms/modalAtom";
+import { TweetOpenModal } from "../store/modalSlice";
+import { useDispatch, useSelector } from "react-redux";
+import TweetModal from "./tweetModal";
 
-function Sidebar() {
+const Sidebar = React.memo(() => {
   const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
   const { logout, error, isLoading } = useLogout();
   const { GetUser, isLoadingUser, userData } = useGetUser();
   const { userTag } = useTag(userData[0]?.displayName);
+  const dispatch = useDispatch();
+  const handleOpen = () => dispatch(TweetOpenModal());
+  const Modal = useSelector((state: any) => state.modal.TweetShowModal);
 
   const { currentUser } = useAuth();
   GetUser(currentUser?.uid);
@@ -51,7 +57,11 @@ function Sidebar() {
         <SidebarList text="Home" Icon={HiHome} link="/" />
         <SidebarList text="Explore" Icon={HiHashtag} />
         {/* <SidebarList text="Notifications" Icon={HiOutlineBell} /> */}
-        <SidebarList text="Messages" Icon={HiOutlineInbox} />
+        <SidebarList
+          text="Messages"
+          Icon={HiOutlineInbox}
+          link={`/messages/${userData[0]?.id}`}
+        />
         <SidebarList text="Bookmarks" Icon={HiOutlineBookmark} />
         <SidebarList text="Lists" Icon={HiOutlineClipboardList} />
         <SidebarList
@@ -62,7 +72,10 @@ function Sidebar() {
         <ThemeSelector />
         <SidebarList text="More" Icon={HiDotsHorizontal} />
       </div>
-      <button className="hidden xl:inline ml-auto bg-[#1d9bf0] text-white rounded-full w-56 h-[52px] text-lg font-bold shadow-md hover:bg-[#1a8cd8]">
+      <button
+        className="hidden xl:inline ml-auto bg-[#1d9bf0] text-white rounded-full w-56 h-[52px] text-lg font-bold shadow-md hover:bg-[#1a8cd8]"
+        onClick={() => handleOpen()}
+      >
         Tweet
       </button>
       <div
@@ -128,8 +141,10 @@ function Sidebar() {
 
         {error && <p>{error}</p>}
       </div>
+
+      {Modal && <TweetModal />}
     </div>
   );
-}
+});
 
 export default Sidebar;

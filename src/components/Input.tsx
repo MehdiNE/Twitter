@@ -23,10 +23,12 @@ import { useAuth } from "../contexts/AuthContext";
 import { Avatar } from "@mui/material";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { useTag } from "../hooks/useTag";
+import { useDispatch } from "react-redux";
+import { TweetCloseModal } from "../store/modalSlice";
 const ReactGiphySearchbox = require("react-giphy-searchbox").default;
 
 interface Props {
-  lightTheme: boolean;
+  lightTheme?: boolean;
 }
 
 function Input({ lightTheme }: Props) {
@@ -35,6 +37,10 @@ function Input({ lightTheme }: Props) {
   const [loading, setLoading] = useState(false);
   const [showGif, setShowGif] = useState(false);
   const [gifUrl, setGifUrl] = useState("");
+
+  //Tweet modal
+  const dispatch = useDispatch();
+  const handleClose = () => dispatch(TweetCloseModal());
 
   const { currentUser } = useAuth();
 
@@ -92,6 +98,7 @@ function Input({ lightTheme }: Props) {
       });
     }
 
+    handleClose();
     setLoading(false);
     setInput("");
     setSelectedFile(null);
@@ -128,7 +135,7 @@ function Input({ lightTheme }: Props) {
             onChange={(e) => setInput(e.target.value)}
             placeholder="What's happening?"
             maxLength={300}
-            className="bg-transparent outline-none text-lg placeholder-gray-500 tracking-wide w-full min-h-[50px]"
+            className="bg-transparent outline-none text-lg placeholder-gray-500 tracking-wide w-full min-h-[50px] max-h-36"
           />
 
           {selectedFile && (

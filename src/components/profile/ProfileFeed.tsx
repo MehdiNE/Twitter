@@ -7,11 +7,13 @@ import { useTag } from "../../hooks/useTag";
 import Moment from "react-moment";
 import { IoAttachOutline } from "react-icons/io5";
 import { GoVerified } from "react-icons/go";
-import { useRecoilState } from "recoil";
-import { profileModalState } from "../../atoms/modalAtom";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import Popover from "@mui/material/Popover";
+
+//redux
+import { useDispatch } from "react-redux";
+import { profileOpenModal } from "../../store/modalSlice";
 
 interface Props {
   userData: {
@@ -56,7 +58,9 @@ function ProfileFeed({
   dimTheme,
   lightTheme,
 }: Props) {
-  const [isOpen, setIsOpen] = useRecoilState(profileModalState);
+  //redux
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const { userTag } = useTag(userData[0]?.displayName);
@@ -67,6 +71,7 @@ function ProfileFeed({
     document.title = `${userData[0]?.displayName} | Twitter By Mahdi`;
   }, [userData]);
 
+  //modal
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const handlePopoverOpen = (event: any) => {
@@ -141,7 +146,7 @@ function ProfileFeed({
               {currentUser?.uid === userData[0]?.id ? (
                 <div className="mt-4 mr-4">
                   <button
-                    onClick={() => setIsOpen(true)}
+                    onClick={() => dispatch(profileOpenModal())}
                     className={`relative rounded-full inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800`}
                   >
                     <span

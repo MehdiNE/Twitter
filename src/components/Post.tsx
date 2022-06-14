@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   HiDotsHorizontal,
   HiHeart,
@@ -22,16 +22,23 @@ import {
 import { db } from "../firebase/config";
 import Moment from "react-moment";
 import { useRecoilState } from "recoil";
-import { modalState, postIdState } from "../atoms/modalAtom";
+import { postIdState } from "../atoms/modalAtom";
 import { Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-function Post({ post, id, postPage, lightTheme }: any) {
+//redux
+import { useDispatch } from "react-redux";
+import { openModal } from "../store/modalSlice";
+import { postState } from "../store/postSlice";
+import ShareTweet from "./ShareTweet";
+
+const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState(false);
-  const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdState);
   const [comments, setComments] = useState([]);
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -83,17 +90,16 @@ function Post({ post, id, postPage, lightTheme }: any) {
         onClick={() => navigate(`/${id}`)}
       >
         {!postPage && (
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/profile/${post?.id}`);
-            }}
-          >
+          <div onClick={(e) => {}}>
             <Avatar
               src={post?.userImg}
               alt=""
               className="mr-4"
               sx={{ width: 50, height: 50 }}
+              onClick={(e) => {
+                navigate(`/profile/${post?.id}`);
+                e.stopPropagation();
+              }}
             />
           </div>
         )}
@@ -144,7 +150,7 @@ function Post({ post, id, postPage, lightTheme }: any) {
           <img
             src={post?.image}
             alt=""
-            className="rounded-2xl max-h-[700px] object-cover mr-2"
+            className="rounded-2xl max-h-[500px] object-cover mr-2"
           />
           <img
             src={post?.gif}
@@ -160,8 +166,9 @@ function Post({ post, id, postPage, lightTheme }: any) {
               className="flex items-center space-x-1 group"
               onClick={(e) => {
                 e.stopPropagation();
-                setPostId(id);
-                setIsOpen(true);
+                // setPostId(id);
+                dispatch(postState(id));
+                dispatch(openModal());
               }}
             >
               <div className="icon group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10">
@@ -232,21 +239,14 @@ function Post({ post, id, postPage, lightTheme }: any) {
                 e.stopPropagation();
               }}
             >
-              <HiOutlineShare className="h-5 group-hover:text-[#1d9bf0]" />
-            </div>
-            <div
-              className="icon group"
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              <HiOutlineChartBar className="h-5 group-hover:text-[#1d9bf0]" />
+              {/* <HiOutlineShare className="h-5 group-hover:text-[#1d9bf0]" /> */}
+              <ShareTweet id={id} />
             </div>
           </div>
         </div>
       </div>
     </>
   );
-}
+});
 
 export default Post;

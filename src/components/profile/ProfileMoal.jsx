@@ -3,8 +3,6 @@ import { Box, Fade, Modal, Backdrop, Avatar } from "@mui/material";
 import countryList from "react-select-country-list";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import { BsClipboard, BsPlusLg } from "react-icons/bs";
-import { useRecoilState } from "recoil";
-import { profileModalState } from "../../atoms/modalAtom";
 import { useAuth } from "../../contexts/AuthContext";
 import Select from "react-select";
 import { doc, updateDoc } from "firebase/firestore";
@@ -18,6 +16,10 @@ import {
   uploadString,
 } from "firebase/storage";
 
+//redux
+import { useSelector, useDispatch } from "react-redux";
+import { profileCloseModal } from "../../store/modalSlice";
+
 function ProfileMoal({ userData }) {
   const { currentUser } = useAuth();
   const [name, setName] = useState(currentUser?.displayName);
@@ -27,6 +29,10 @@ function ProfileMoal({ userData }) {
   const [loading, setLoading] = useState(false);
   const [header, setHeader] = useState(null);
   const [headerSrc, setHeaderSrc] = useState("");
+
+  //redux
+  const modal = useSelector((state) => state.modal.profileShowModal);
+  const dispatch = useDispatch();
 
   // location
   const [value, setValue] = useState("");
@@ -119,15 +125,12 @@ function ProfileMoal({ userData }) {
     }
 
     setLoading(false);
-    setIsOpen(false);
+    dispatch(profileCloseModal());
     window.location.reload(true);
   };
 
   //modal
-  const [open, setOpen] = useState(false);
-  const [isOpen, setIsOpen] = useRecoilState(profileModalState);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setIsOpen(false);
+  const handleClose = () => dispatch(profileCloseModal());
 
   const style = {
     position: "absolute",
@@ -150,7 +153,7 @@ function ProfileMoal({ userData }) {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={isOpen}
+        open={modal}
         onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -158,7 +161,7 @@ function ProfileMoal({ userData }) {
           timeout: 500,
         }}
       >
-        <Fade in={isOpen}>
+        <Fade in={modal}>
           <Box sx={style}>
             <form onSubmit={handleSubmit}>
               <div className="text-[#d9d9d9] flex justify-between p-3">

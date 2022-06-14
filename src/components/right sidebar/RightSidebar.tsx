@@ -1,14 +1,15 @@
 import { Avatar } from "@mui/material";
 import { collection, onSnapshot } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { useRecoilState } from "recoil";
 import { dimModeState, lightModeState } from "../../atoms/modalAtom";
 import { db } from "../../firebase/config";
+import MessagesDrawer from "../Messages/MessagesDrawer";
 
-function RightSidebar() {
+const RightSidebar = React.memo(() => {
   const [users, setUsers] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
   const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
@@ -116,9 +117,11 @@ function RightSidebar() {
         {/* <button className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-3 cursor-pointer transition duration-200 ease-out flex items-center justify-between w-full text-[#1d9bf0] font-light">
           Show more
         </button> */}
+
+        {/* <MessagesDrawer /> */}
       </div>
     </div>
   );
-}
+});
 
 export default RightSidebar;

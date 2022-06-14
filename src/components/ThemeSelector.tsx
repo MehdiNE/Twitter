@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -9,7 +9,6 @@ import {
   darkModeState,
   dimModeState,
   lightModeState,
-  themeDialogState,
 } from "../atoms/modalAtom";
 import { IoColorPaletteSharp } from "react-icons/io5";
 import {
@@ -19,41 +18,53 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
+import MediaQuery from "react-responsive";
+import { BsBrush } from "react-icons/bs";
 
 export default function ThemeSelector() {
-  const [open, setOpen] = React.useState(false);
-  const [isOpen, setIsOpen] = useRecoilState(themeDialogState);
+  const [open, setOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useRecoilState(themeDialogState);
   const [darkTheme, setDarkTheme] = useRecoilState(darkModeState);
   const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
   const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
 
-  const [value, setValue] = React.useState("Lights out");
+  const [value, setValue] = useState("Lights out");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
   };
 
   const handleClickOpen = () => {
-    setIsOpen(true);
+    setOpen(true);
   };
 
   const handleClose = () => {
-    setIsOpen(false);
+    setOpen(false);
   };
 
   return (
     <div>
-      <div
-        className={`${
-          lightTheme ? "text-black" : "text-[#d9d9d9]"
-        } flex items-center justify-center xl:justify-start text-xl space-x-3 hoverAnimation `}
-      >
-        <div className="flex space-x-3" onClick={handleClickOpen}>
-          <IoColorPaletteSharp className="h-7 w-7" />
-          <span className="hidden xl:inline">Display</span>
+      <MediaQuery maxWidth={700}>
+        <div className={`${lightTheme ? "text-black" : "text-white"} `}>
+          <div className="flex space-x-3" onClick={handleClickOpen}>
+            <BsBrush size={20} />
+            <span className="inline">Display</span>
+          </div>
         </div>
-      </div>
-      <Dialog open={isOpen} onClose={handleClose}>
+      </MediaQuery>
+      <MediaQuery minWidth={701}>
+        <div
+          className={`${
+            lightTheme ? "text-black" : "text-[#d9d9d9]"
+          } flex items-center justify-center xl:justify-start text-xl space-x-3 hoverAnimation `}
+        >
+          <div className="flex space-x-3" onClick={handleClickOpen}>
+            <IoColorPaletteSharp className="h-7 w-7" />
+            <span className="hidden xl:inline">Display</span>
+          </div>
+        </div>
+      </MediaQuery>
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle sx={{ bgcolor: "#15202b", color: "white" }}>
           theme
         </DialogTitle>
@@ -77,7 +88,7 @@ export default function ThemeSelector() {
                 onChange={handleChange}
               >
                 <DialogActions>
-                  <div className="flex justify-center items-center space-x-4 p-3 rounded-2xl text-white bg-[#1e2732]">
+                  <div className="flex flex-col sm:flex-row justify-center items-center sm:space-x-4 space-y-4 sm:space-y-0 p-3 rounded-2xl text-white bg-[#1e2732]">
                     <div className="bg-black rounded-md p-2 w-36 h-14">
                       <FormControlLabel
                         value="Lights out"

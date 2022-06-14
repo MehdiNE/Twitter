@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import {
-  dimModeState,
-  lightModeState,
-  profileModalState,
-} from "../atoms/modalAtom";
+import { dimModeState, lightModeState } from "../atoms/modalAtom";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import ProfileFeed from "../components/profile/ProfileFeed";
 import ProfileMoal from "../components/profile/ProfileMoal";
@@ -13,12 +9,13 @@ import { db } from "../firebase/config";
 import { useAuth } from "../contexts/AuthContext";
 import { useParams } from "react-router-dom";
 import RightSidebar from "../components/right sidebar/RightSidebar";
+import { useSelector } from "react-redux";
 
 function Profile() {
   const [posts, setPosts] = useState<any>([]);
   const [users, setUsers] = useState<any>([]);
   const [loading, setLoading] = useState(false);
-  const [isOpen] = useRecoilState(profileModalState);
+  const modal = useSelector((state: any) => state.modal.profileShowModal);
   const { currentUser } = useAuth();
   const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
   const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
@@ -73,7 +70,7 @@ function Profile() {
       />
       <RightSidebar />
 
-      {isOpen && <ProfileMoal userData={userData} />}
+      {modal && <ProfileMoal userData={userData} />}
     </main>
   );
 }

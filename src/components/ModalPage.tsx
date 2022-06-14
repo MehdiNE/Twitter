@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import { useAuth } from "../contexts/AuthContext";
 import { useRecoilState } from "recoil";
-import { modalState, postIdState } from "../atoms/modalAtom";
+import { postIdState } from "../atoms/modalAtom";
 import {
   onSnapshot,
   doc,
@@ -28,6 +28,11 @@ import { AiOutlineFileGif } from "react-icons/ai";
 import { Picker } from "emoji-mart";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useTag } from "../hooks/useTag";
+
+//redux
+import { useSelector, useDispatch } from "react-redux";
+import { closeModal } from "../store/modalSlice";
+
 const ReactGiphySearchbox = require("react-giphy-searchbox").default;
 
 const style = {
@@ -52,9 +57,19 @@ export default function TransitionsModal() {
   const [post, setPost] = useState<any>();
   const [comment, setComment] = useState("");
 
-  const [isOpen, setIsOpen] = useRecoilState(modalState);
-  const [postId] = useRecoilState(postIdState);
-  const handleClose = () => setIsOpen(false);
+  //redux
+  const modal = useSelector((state: any) => state.modal.showModal);
+  const postId = useSelector((state: any) => state.post.postIdState);
+
+  const dispatch = useDispatch();
+  const handleClose = () => dispatch(closeModal());
+
+  // const [postId] = useRecoilState(postIdState);
+  console.log(
+    "🚀 ~ file: ModalPage.tsx ~ line 63 ~ TransitionsModal ~ postId",
+    postId
+  );
+
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -112,7 +127,7 @@ export default function TransitionsModal() {
       });
     }
 
-    setIsOpen(false);
+    handleClose();
     setComment("");
     setSelectedFile(null);
     setEmojis(false);
@@ -135,7 +150,7 @@ export default function TransitionsModal() {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={isOpen}
+        open={modal}
         onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -146,13 +161,13 @@ export default function TransitionsModal() {
           backdropFilter: "blur(1px)",
         }}
       >
-        <Fade in={isOpen}>
+        <Fade in={modal}>
           <Box sx={style}>
             <div className="inline-block align-bottom bg-slate-900 rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full">
               <div className="flex items-center px-1.5 py-2">
                 <div
                   className="hoverAnimation w-9 h-9 flex items-center justify-center xl:px-0"
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => handleClose()}
                 >
                   <HiX className="h-[22px] text-white" />
                 </div>

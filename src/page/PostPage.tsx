@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
-import { dimModeState, lightModeState, modalState } from "../atoms/modalAtom";
+import { dimModeState, lightModeState } from "../atoms/modalAtom";
 import { useRecoilState } from "recoil";
 import TransitionsModal from "../components/ModalPage";
 import Comment from "../components/Comment";
@@ -16,9 +16,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import Post from "../components/Post";
 import { BsArrowLeft } from "react-icons/bs";
 import RightSidebar from "../components/right sidebar/RightSidebar";
+import { useSelector } from "react-redux";
 
 function PostPage() {
-  const [isOpen] = useRecoilState(modalState);
+  const modal = useSelector((state: any) => state.modal.showModal);
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
   const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
@@ -95,7 +96,7 @@ function PostPage() {
           followResults={followResults}
         /> */}
 
-        {isOpen && <TransitionsModal />}
+        {modal && <TransitionsModal />}
       </main>
     </div>
   );

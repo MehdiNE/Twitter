@@ -1,41 +1,24 @@
-import { useEffect, useState } from "react";
 import { HiOutlineSparkles } from "react-icons/hi";
 import Input from "./Input";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { db } from "../firebase/config";
 import Post from "./Post";
 import { ClipLoader } from "react-spinners";
+import MediaQuery from "react-responsive";
+import { Avatar } from "@mui/material";
+import { useAuth } from "../contexts/AuthContext";
+import { useDispatch } from "react-redux";
+import { OpenDrawer } from "../store/modalSlice";
 
 interface Props {
   lightTheme: boolean;
   dimTheme: boolean;
+  posts: any;
+  isLoading: boolean;
+  error: null | string;
 }
 
-function Feed({ lightTheme, dimTheme }: Props) {
-  const [posts, setPosts] = useState<any>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<null | string>(null);
-
-  useEffect(() => {
-    setIsLoading(true);
-    setError(null);
-
-    const unsubscribe = onSnapshot(
-      query(collection(db, "posts"), orderBy("timestamp", "desc")),
-      (snapshot) => {
-        setPosts(snapshot?.docs);
-        setIsLoading(false);
-      },
-      (error) => {
-        setError(error.message);
-        console.log(error);
-      }
-    );
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+function Feed({ lightTheme, dimTheme, posts, isLoading, error }: Props) {
+  const dispatch = useDispatch();
+  const { currentUser } = useAuth();
 
   return (
     <div
@@ -44,12 +27,21 @@ function Feed({ lightTheme, dimTheme }: Props) {
       }`}
     >
       <div
-        className={`flex items-center sm:justify-between py-2 px-3 sticky top-0 z-50 backdrop-blur-md dark:bg-black/80 ${
+        className={`flex items-center sm:border-b-0 border-b sm:justify-between py-2 px-3 sticky top-0 z-50 backdrop-blur-md dark:bg-black/80 ${
           lightTheme
             ? "text-black bg-slate-50/80 border-gray-200"
             : "border-gray-700 text-[#d9d9d9]"
         } ${dimTheme && "bg-[#15202b] bg-opacity-80"}`}
       >
+        <MediaQuery maxWidth={700}>
+          <Avatar
+            src={currentUser?.photoURL}
+            alt=""
+            className="mr-7"
+            sx={{ width: 32, height: 32 }}
+            onClick={() => dispatch(OpenDrawer())}
+          />
+        </MediaQuery>
         <h2 className="text-lg sm:text-xl font-bold">Home</h2>
         <div className="hoverAnimation w-9 h-9 flex items-center justify-center xl:px-0 ml-auto">
           <HiOutlineSparkles className="h-5 w-5" />
