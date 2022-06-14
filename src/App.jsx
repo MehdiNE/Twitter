@@ -10,6 +10,7 @@ import { Offline, Online } from "react-detect-offline";
 import { useRecoilState } from "recoil";
 import { darkModeState } from "./atoms/modalAtom";
 import Messages from "./page/Messages";
+import Bookmarks from "./page/Bookmarks";
 
 const Home = React.lazy(() => import("./page/Home"));
 const PostPage = React.lazy(() => import("./page/PostPage"));
@@ -91,6 +92,7 @@ function App() {
           />
           <Route path="/resetpassword" element={<ForgetPassword />} />
           <Route path="/messages/:id" element={<Messages />} />
+          <Route path="/bookmarks" element={<Bookmarks />} />
 
           <Route
             path="*"

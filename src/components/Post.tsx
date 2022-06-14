@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import {
   HiDotsHorizontal,
   HiHeart,
-  HiOutlineChartBar,
   HiOutlineChat,
   HiOutlineHeart,
-  HiOutlineShare,
   HiOutlineTrash,
 } from "react-icons/hi";
 import { FaRetweet } from "react-icons/fa";
@@ -21,22 +19,25 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/config";
 import Moment from "react-moment";
-import { useRecoilState } from "recoil";
-import { postIdState } from "../atoms/modalAtom";
 import { Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import ShareTweet from "./ShareTweet";
+import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
 //redux
 import { useDispatch } from "react-redux";
 import { openModal } from "../store/modalSlice";
 import { postState } from "../store/postSlice";
-import ShareTweet from "./ShareTweet";
 
 const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState(false);
-  const [postId, setPostId] = useRecoilState(postIdState);
   const [comments, setComments] = useState([]);
+
+  const [bookmarked, setBookmarked] = useState(false);
+
+  const timestampNumber = post.timestamp.seconds;
+  const timesTampId = timestampNumber.toString();
 
   const dispatch = useDispatch();
 
@@ -44,25 +45,21 @@ const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
 
   const { currentUser } = useAuth();
 
-  useEffect(
-    () =>
-      onSnapshot(
-        query(
-          collection(db, "posts", id, "comments"),
-          orderBy("timestamp", "desc")
-        ),
-        (snapshot: any) => setComments(snapshot.docs)
+  useEffect(() => {
+    onSnapshot(
+      query(
+        collection(db, "posts", id, "comments"),
+        orderBy("timestamp", "desc")
       ),
-    [id]
-  );
+      (snapshot: any) => setComments(snapshot.docs)
+    );
+  }, [id]);
 
-  useEffect(
-    () =>
-      onSnapshot(collection(db, "posts", id, "likes"), (snapshot: any) =>
-        setLikes(snapshot?.docs)
-      ),
-    [id]
-  );
+  useEffect(() => {
+    onSnapshot(collection(db, "posts", id, "likes"), (snapshot: any) =>
+      setLikes(snapshot?.docs)
+    );
+  }, [id]);
 
   useEffect(
     () =>
@@ -81,6 +78,29 @@ const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
       });
     }
   };
+
+  const addToBookmarks = async () => {
+    if (!bookmarked) {
+      await setDoc(
+        doc(db, "users", currentUser?.uid, "bookmarks", timesTampId),
+        {
+          id: post.id,
+          tag: post.tag,
+          text: post.text,
+          timestamp: post.timestamp,
+          userImg: post.userImg,
+          username: post.username,
+          image: post.image,
+          gif: post.gif,
+        }
+      );
+    } else {
+      await deleteDoc(
+        doc(db, "users", currentUser?.uid, "bookmarks", timesTampId)
+      );
+    }
+  };
+
   return (
     <>
       <div
@@ -239,8 +259,36 @@ const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
                 e.stopPropagation();
               }}
             >
-              {/* <HiOutlineShare className="h-5 group-hover:text-[#1d9bf0]" /> */}
               <ShareTweet id={id} />
+            </div>
+            <div
+              className="icon group"
+              onClick={(e) => {
+                e.stopPropagation();
+                addToBookmarks();
+              }}
+            >
+              {!bookmarked && (
+                <BsBookmark
+                  className="h-5"
+                  onClick={() => {
+                    setBookmarked(true);
+                  }}
+                />
+              )}
+              {bookmarked && (
+                <BsBookmarkFill
+                  className="h-5 "
+                  onClick={() => {
+                    setBookmarked(false);
+                  }}
+                />
+              )}
+              {/* {bookmarked ? (
+                <BsBookmark className="h-5 text-pink-600" />
+              ) : (
+                <BsBookmarkFill className="h-5 group-hover:text-pink-600" />
+              )} */}
             </div>
           </div>
         </div>

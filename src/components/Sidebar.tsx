@@ -25,6 +25,7 @@ import { lightModeState } from "../atoms/modalAtom";
 import { TweetOpenModal } from "../store/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import TweetModal from "./tweetModal";
+import { Link } from "react-router-dom";
 
 const Sidebar = React.memo(() => {
   const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
@@ -51,7 +52,10 @@ const Sidebar = React.memo(() => {
   return (
     <div className="hidden sm:flex flex-col items-center xl:items-start xl:w-[340px] p-2 fixed h-full">
       <div className="flex items-center justify-center w-14 h-14 hoverAnimation p-0 xl:ml-24">
-        <BsTwitter className="dark:text-[#d9d9d9] text-[#1d9bf0]" size={40} />
+        <Link to="/">
+          <BsTwitter className="dark:text-[#d9d9d9] text-[#1d9bf0]" size={40} />
+          s
+        </Link>
       </div>
       <div className="space-y-2.5 mt-4 mb-2.5 xl:ml-24">
         <SidebarList text="Home" Icon={HiHome} link="/" />

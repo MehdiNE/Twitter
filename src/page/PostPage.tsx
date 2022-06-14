@@ -28,25 +28,27 @@ function PostPage() {
 
   let { id }: any = useParams();
 
-  useEffect(
-    () =>
-      onSnapshot(doc(db, "posts", id), (snapshot: any) => {
-        setPost(snapshot.data());
-      }),
-    [id]
-  );
+  useEffect(() => {
+    const unsubscribe = onSnapshot(doc(db, "posts", id), (snapshot: any) => {
+      setPost(snapshot.data());
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [id]);
 
-  useEffect(
-    () =>
-      onSnapshot(
-        query(
-          collection(db, "posts", id, "comments"),
-          orderBy("timestamp", "desc")
-        ),
-        (snapshot: any) => setComments(snapshot.docs)
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      query(
+        collection(db, "posts", id, "comments"),
+        orderBy("timestamp", "desc")
       ),
-    [id]
-  );
+      (snapshot: any) => setComments(snapshot.docs)
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, [id]);
 
   return (
     <div>

@@ -16,7 +16,7 @@ function Messages() {
     setIsLoading(true);
     let ref = collection(db, "users");
 
-    onSnapshot(ref, (snapshot) => {
+    const unsubscribe = onSnapshot(ref, (snapshot) => {
       let results: any = [];
       snapshot.docs.forEach((doc) => {
         results.push({ ...doc.data(), id: doc.id });
@@ -24,6 +24,10 @@ function Messages() {
       setUsers(results);
       setIsLoading(false);
     });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (

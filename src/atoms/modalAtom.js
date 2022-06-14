@@ -5,6 +5,11 @@ export const postIdState = atom({
   default: "",
 });
 
+export const bookmarkPosts = atom({
+  key: "bookmarkPosts",
+  default: [],
+});
+
 export const darkModeState = atom({
   key: "darkModeState",
   default: true,

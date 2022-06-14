@@ -79,6 +79,8 @@ function Input({ lightTheme }: Props) {
       tag: userTag,
       text: input,
       timestamp: serverTimestamp(),
+      gif: "",
+      image: "",
     });
 
     const imgRef = ref(storage, `posts/${docRef.id}/image`);
