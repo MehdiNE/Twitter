@@ -154,7 +154,7 @@ function Signup() {
                 value={displayName}
                 required
                 minLength={3}
-                maxLength={12}
+                maxLength={25}
               />
             </div>
 

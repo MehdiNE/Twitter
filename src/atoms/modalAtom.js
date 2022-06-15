@@ -4,6 +4,10 @@ export const postIdState = atom({
   key: "postIdState",
   default: "",
 });
+export const bookmarkState = atom({
+  key: "bookmarkState",
+  default: "",
+});
 
 export const bookmarkPosts = atom({
   key: "bookmarkPosts",

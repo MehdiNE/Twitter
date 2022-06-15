@@ -1,9 +1,14 @@
-import { onSnapshot, query, collection } from "firebase/firestore";
+import {
+  onSnapshot,
+  collection,
+  orderBy,
+  query,
+  getDocs,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useRecoilState } from "recoil";
 import {
-  bookmarkPosts,
+  bookmarkState,
   dimModeState,
   lightModeState,
 } from "../atoms/modalAtom";
@@ -12,26 +17,60 @@ import RightSidebar from "../components/right sidebar/RightSidebar";
 import Sidebar from "../components/Sidebar";
 import { useAuth } from "../contexts/AuthContext";
 import { db } from "../firebase/config";
+import BookmarksPost from "../components/BookmarksPots";
 
 function Bookmarks() {
   const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
   const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
   const [bookmarks, setBookmarks] = useState([]);
+  console.log(
+    "🚀 ~ file: Bookmarks.tsx ~ line 25 ~ Bookmarks ~ bookmarks",
+    bookmarks
+  );
 
   const { currentUser } = useAuth();
+  const [bookmarkId, setBookmarkId] = useRecoilState(bookmarkState);
+
+  // useEffect(() => {
+  //   const unsubscribe = onSnapshot(
+  //     query(collection(db, "posts"), orderBy("timestamp", "desc")),
+  //     (snapshot) => {
+  //       setPosts(snapshot?.docs);
+  //     }
+  //   );
+
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, []);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(db, "users", currentUser?.uid, "bookmarks"),
-      (snapshot: any) => {
-        setBookmarks(snapshot?.docs);
-      }
-    );
+    const ref = collection(db, "posts", bookmarkId, "bookmarks");
 
-    return () => {
-      unsubscribe();
-    };
-  }, [currentUser?.uid]);
+    getDocs(ref).then((snapshot) => {
+      let result: any = [];
+      snapshot.docs.forEach((doc) => {
+        result.push({ id: doc.id, ...doc.data() });
+      });
+      setBookmarks(result);
+    });
+  }, [bookmarkId]);
+
+  // useEffect(() => {
+  //   onSnapshot(
+  //     collection(db, "posts", bookmarkId, "bookmarks"),
+  //     (snapshot: any) => setBookmarks(snapshot?.docs)
+  //   );
+  // }, [bookmarkId]);
+
+  // useEffect(() => {
+  //   onSnapshot(
+  //     collection(db, "posts", bookmarkId, "bookmarks"),
+  //     (snapshot: any) => {
+  //       setBookmarks(snapshot?.docs);
+  //     }
+  //   );
+  // }, [bookmarkId, currentUser?.uid]);
   return (
     <main
       className={`dark:bg-black min-w-full min-h-screen flex max-w-[1500px] mx-auto ${
@@ -58,11 +97,15 @@ function Bookmarks() {
             </p>
           </div>
         </div>
-        <div className="pb-72">
+        <BookmarksPost bookmarks={bookmarks[0]} />
+        {/* {bookmarks.map((post: any) => (
+          <BookmarksPost post={post.data()} key={post.id} id={post.id} />
+        ))} */}
+        {/* <div className="pb-72">
           {bookmarks.map((post: any) => (
             <Post post={post.data()} key={post.id} id={post.id} />
           ))}
-        </div>
+        </div> */}
       </div>
       <RightSidebar />
     </main>

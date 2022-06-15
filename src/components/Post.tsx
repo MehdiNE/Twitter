@@ -28,16 +28,21 @@ import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { openModal } from "../store/modalSlice";
 import { postState } from "../store/postSlice";
+import { useRecoilState } from "recoil";
+import { bookmarkState } from "../atoms/modalAtom";
 
 const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState(false);
   const [comments, setComments] = useState([]);
 
+  const [bookmarks, setBookmarks] = useState([]);
   const [bookmarked, setBookmarked] = useState(false);
+  const [bookmarkId, setBookmarkId] = useRecoilState(bookmarkState);
 
-  const timestampNumber = post.timestamp.seconds;
-  const timesTampId = timestampNumber.toString();
+  useEffect(() => {
+    setBookmarkId(id);
+  }, [id, setBookmarkId]);
 
   const dispatch = useDispatch();
 
@@ -55,6 +60,7 @@ const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
     );
   }, [id]);
 
+  //likes
   useEffect(() => {
     onSnapshot(collection(db, "posts", id, "likes"), (snapshot: any) =>
       setLikes(snapshot?.docs)
@@ -78,28 +84,40 @@ const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
       });
     }
   };
-
+  //bookmarks
+  // console.log(
+  //   "🚀 ~ file: Post.tsx ~ line 84 ~ addToBookmarks ~ bookmarked",
+  //   bookmarked
+  // );
   const addToBookmarks = async () => {
-    if (!bookmarked) {
-      await setDoc(
-        doc(db, "users", currentUser?.uid, "bookmarks", timesTampId),
-        {
-          id: post.id,
-          tag: post.tag,
-          text: post.text,
-          timestamp: post.timestamp,
-          userImg: post.userImg,
-          username: post.username,
-          image: post.image,
-          gif: post.gif,
-        }
-      );
+    if (bookmarked) {
+      await deleteDoc(doc(db, "posts", id, "bookmarks", currentUser?.uid));
     } else {
-      await deleteDoc(
-        doc(db, "users", currentUser?.uid, "bookmarks", timesTampId)
-      );
+      await setDoc(doc(db, "posts", id, "bookmarks", currentUser?.uid), {
+        id: post.id,
+        tag: post.tag,
+        text: post.text,
+        timestamp: post.timestamp,
+        userImg: post.userImg,
+        username: post.username,
+        image: post.image,
+        gif: post.gif,
+      });
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "posts", id, "bookmarks"),
+      (snapshot: any) => {
+        setBookmarks(snapshot?.docs);
+      }
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  }, [id]);
 
   return (
     <>
@@ -268,27 +286,12 @@ const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
                 addToBookmarks();
               }}
             >
-              {!bookmarked && (
-                <BsBookmark
-                  className="h-5"
-                  onClick={() => {
-                    setBookmarked(true);
-                  }}
-                />
-              )}
               {bookmarked && (
-                <BsBookmarkFill
-                  className="h-5 "
-                  onClick={() => {
-                    setBookmarked(false);
-                  }}
-                />
+                <BsBookmarkFill onClick={() => setBookmarked(false)} />
               )}
-              {/* {bookmarked ? (
-                <BsBookmark className="h-5 text-pink-600" />
-              ) : (
-                <BsBookmarkFill className="h-5 group-hover:text-pink-600" />
-              )} */}
+              {!bookmarked && (
+                <BsBookmark onClick={() => setBookmarked(true)} />
+              )}
             </div>
           </div>
         </div>

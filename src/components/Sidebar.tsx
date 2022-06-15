@@ -66,7 +66,11 @@ const Sidebar = React.memo(() => {
           Icon={HiOutlineInbox}
           link={`/messages/${userData[0]?.id}`}
         />
-        <SidebarList text="Bookmarks" Icon={HiOutlineBookmark} />
+        <SidebarList
+          text="Bookmarks"
+          Icon={HiOutlineBookmark}
+          link={"/bookmarks"}
+        />
         <SidebarList text="Lists" Icon={HiOutlineClipboardList} />
         <SidebarList
           text="Profile"
