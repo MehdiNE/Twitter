@@ -1,4 +1,4 @@
-import { Menu, MenuItem } from "@mui/material";
+import { Menu, MenuItem, Tooltip } from "@mui/material";
 import React, { useState } from "react";
 import { BsClipboard } from "react-icons/bs";
 import { HiOutlineShare } from "react-icons/hi";
@@ -25,9 +25,19 @@ function ShareTweet({ id }: any) {
 
   return (
     <div>
-      <button onClick={handleClick}>
-        <HiOutlineShare className="h-5 group-hover:text-[#1d9bf0]" />
-      </button>
+      <div
+        className="icon group"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <Tooltip title="Share" className="icon group-hover:bg-pink-600/10">
+          <button onClick={handleClick}>
+            <HiOutlineShare className="h-5 group-hover:text-[#1d9bf0]" />
+          </button>
+        </Tooltip>
+      </div>
+
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}

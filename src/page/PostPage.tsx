@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { useParams, useNavigate } from "react-router-dom";
-import Post from "../components/Post";
+import Post from "../components/Posts/Post";
 import { BsArrowLeft } from "react-icons/bs";
 import RightSidebar from "../components/right sidebar/RightSidebar";
 import { useSelector } from "react-redux";

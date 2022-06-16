@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 import { useTag } from "../hooks/useTag";
 import { useAuth } from "../contexts/AuthContext";
 import ThemeSelector from "./ThemeSelector";
-import { useState } from "react";
+import React, { useState } from "react";
 import { MdLogout } from "react-icons/md";
 import useLogout from "../hooks/useLogout";
 import { BsBookmark } from "react-icons/bs";
@@ -15,7 +15,7 @@ interface Props {
   lightTheme: boolean;
 }
 
-const DrawerOnMobile = ({ lightTheme }: Props) => {
+const DrawerOnMobile = React.memo(({ lightTheme }: Props) => {
   const open = useSelector((state: any) => state.modal.isDrawerOpen);
   const { currentUser } = useAuth();
 
@@ -142,6 +142,6 @@ const DrawerOnMobile = ({ lightTheme }: Props) => {
       </Drawer>
     </>
   );
-};
+});
 
 export default DrawerOnMobile;

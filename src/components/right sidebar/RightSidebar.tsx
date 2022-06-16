@@ -2,12 +2,14 @@ import { Avatar } from "@mui/material";
 import { collection, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { useRecoilState } from "recoil";
 import { dimModeState, lightModeState } from "../../atoms/modalAtom";
 import { db } from "../../firebase/config";
-import MessagesDrawer from "../Messages/MessagesDrawer";
+import { messageAlert, openAlert, severityAlert } from "../../store/AlertSlice";
+// import MessagesDrawer from "../Messages/MessagesDrawer";
 
 const RightSidebar = React.memo(() => {
   const [users, setUsers] = useState<any>();
@@ -15,6 +17,7 @@ const RightSidebar = React.memo(() => {
   const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
   const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsLoading(true);
@@ -106,6 +109,16 @@ const RightSidebar = React.memo(() => {
                   className={`ml-auto  dark:  dark:  rounded-full font-bold text-sm py-1.5 px-3.5 ${
                     lightTheme ? "bg-black text-white" : "bg-white text-black"
                   }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    dispatch(openAlert());
+                    dispatch(severityAlert("warning"));
+                    dispatch(
+                      messageAlert(
+                        "follow/unfollow functionality is not ready yet!"
+                      )
+                    );
+                  }}
                 >
                   Follow
                 </button>

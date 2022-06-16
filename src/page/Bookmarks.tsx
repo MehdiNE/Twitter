@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import { useRecoilState } from "recoil";
 import { dimModeState, lightModeState } from "../atoms/modalAtom";
-import Post from "../components/Post";
+import Post from "../components/Posts/Post";
 import RightSidebar from "../components/right sidebar/RightSidebar";
 import Sidebar from "../components/Sidebar";
 import { useAuth } from "../contexts/AuthContext";
@@ -16,9 +16,22 @@ function Bookmarks() {
   const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
   const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
   const [posts, setPosts] = useState([]);
+  console.log("🚀 ~ file: Bookmarks.tsx ~ line 19 ~ Bookmarks ~ posts", posts);
   const [isLoading, setIsLoading] = useState(false);
 
   const { currentUser } = useAuth();
+
+  let empteyPost;
+  if (posts.length === 0) {
+    empteyPost = (
+      <div className="text-center text-gray-200 mt-7 mx-16">
+        <h3 className="font-bold text-lg">
+          Looks like you haven't bookmarked any posts 😢
+        </h3>
+        <p>tap the bookmark icon on any posts to add to your bookmark!</p>
+      </div>
+    );
+  }
 
   useEffect(() => {
     setIsLoading(true);
@@ -78,11 +91,18 @@ function Bookmarks() {
             <ClipLoader color="#1DA1F2" size={40} />
           </div>
         )}
+
         {!isLoading && (
           <div className="pb-72">
-            {posts.map((post: any) => (
-              <Post post={post.data()} key={post.id} id={post.id} />
-            ))}
+            {empteyPost ? (
+              <>{empteyPost}</>
+            ) : (
+              <>
+                {posts.map((post: any) => (
+                  <Post post={post.data()} key={post.id} id={post.id} />
+                ))}
+              </>
+            )}
           </div>
         )}
       </div>

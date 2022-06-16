@@ -1,12 +1,14 @@
 import { HiOutlineSparkles } from "react-icons/hi";
 import Input from "./Input";
-import Post from "./Post";
+import Post from "./Posts/Post";
 import { ClipLoader } from "react-spinners";
 import MediaQuery from "react-responsive";
 import { Avatar } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext";
 import { useDispatch } from "react-redux";
 import { OpenDrawer } from "../store/modalSlice";
+import { memo } from "react";
+import AlertComponent from "../UI/Alert";
 
 interface Props {
   lightTheme: boolean;
@@ -71,4 +73,4 @@ function Feed({ lightTheme, dimTheme, posts, isLoading, error }: Props) {
   );
 }
 
-export default Feed;
+export default memo(Feed);

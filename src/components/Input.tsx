@@ -31,7 +31,7 @@ interface Props {
   lightTheme?: boolean;
 }
 
-function Input({ lightTheme }: Props) {
+const Input = React.memo(({ lightTheme }: Props) => {
   const [input, setInput] = useState("");
   const [emojis, setEmojis] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -262,6 +262,6 @@ function Input({ lightTheme }: Props) {
       </div>
     </div>
   );
-}
+});
 
 export default Input;

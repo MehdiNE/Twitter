@@ -54,7 +54,6 @@ const Sidebar = React.memo(() => {
       <div className="flex items-center justify-center w-14 h-14 hoverAnimation p-0 xl:ml-24">
         <Link to="/">
           <BsTwitter className="dark:text-[#d9d9d9] text-[#1d9bf0]" size={40} />
-          s
         </Link>
       </div>
       <div className="space-y-2.5 mt-4 mb-2.5 xl:ml-24">
