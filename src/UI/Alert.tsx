@@ -31,7 +31,12 @@ function AlertComponent() {
   return (
     <div>
       <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
+        <Alert
+          onClose={handleClose}
+          severity={severity}
+          sx={{ width: "100%" }}
+          className="mb-10 sm:mb-0"
+        >
           {message}
         </Alert>
       </Snackbar>

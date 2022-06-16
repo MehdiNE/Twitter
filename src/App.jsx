@@ -14,6 +14,8 @@ import Bookmarks from "./page/Bookmarks";
 import TransitionsModal from "./components/ModalPage";
 import { useSelector } from "react-redux";
 import AlertComponent from "./UI/Alert";
+import MediaQuery from "react-responsive";
+import MobileBottomNavigation from "./components/MobileBottomNavigation";
 
 const Home = React.lazy(() => import("./page/Home"));
 const PostPage = React.lazy(() => import("./page/PostPage"));
@@ -114,6 +116,10 @@ function App() {
           />
         </Routes>
       </Online>
+
+      <MediaQuery maxWidth={700}>
+        <MobileBottomNavigation />
+      </MediaQuery>
 
       <AlertComponent />
       {modal && <TransitionsModal />}

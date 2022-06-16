@@ -17,7 +17,7 @@ export default function OpenIconSpeedDial() {
     <Box sx={{ height: 320, transform: "translateZ(0px)", flexGrow: 1 }}>
       <SpeedDial
         ariaLabel="SpeedDial openIcon example"
-        sx={{ position: "absolute", bottom: 16, right: 16 }}
+        sx={{ position: "absolute", bottom: 60, right: 16 }}
         icon={
           <SpeedDialIcon
             openIcon={<BsPenFill className="text-center" size={24} />}

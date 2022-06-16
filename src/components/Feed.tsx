@@ -8,7 +8,6 @@ import { useAuth } from "../contexts/AuthContext";
 import { useDispatch } from "react-redux";
 import { OpenDrawer } from "../store/modalSlice";
 import { memo } from "react";
-import AlertComponent from "../UI/Alert";
 
 interface Props {
   lightTheme: boolean;
