@@ -4,14 +4,20 @@ import { BsClipboard } from "react-icons/bs";
 import { HiOutlineShare } from "react-icons/hi";
 import { useClipboard } from "use-clipboard-copy";
 import { RWebShare } from "react-web-share";
+import { useDispatch } from "react-redux";
+import { openAlert, severityAlert, messageAlert } from "../../store/AlertSlice";
 
 function ShareTweet({ id }: any) {
   const clipboard = useClipboard();
+  const dispatch = useDispatch();
 
   const handleCopy = React.useCallback(() => {
     const url = `http://localhost:3000/${id}`;
-    clipboard.copy(url); // programmatically copying a value
-  }, [clipboard, id]);
+    clipboard.copy(url);
+    dispatch(openAlert());
+    dispatch(severityAlert("success"));
+    dispatch(messageAlert("Copied to clipboard"));
+  }, [clipboard, dispatch, id]);
 
   //menu
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -24,7 +30,7 @@ function ShareTweet({ id }: any) {
   };
 
   return (
-    <div>
+    <>
       <div
         className="icon group"
         onClick={(e) => {
@@ -62,7 +68,13 @@ function ShareTweet({ id }: any) {
           },
         }}
       >
-        <MenuItem onClick={handleCopy}>
+        <MenuItem
+          onClick={(e) => {
+            handleCopy();
+            e.stopPropagation();
+            handleClose();
+          }}
+        >
           <div className="flex space-x-4 items-center text-gray-200">
             <BsClipboard size={18} className="text-gray-500" />
             <span>Copy link to Tweet</span>
@@ -86,8 +98,8 @@ function ShareTweet({ id }: any) {
           </div>
         </MenuItem>
       </Menu>
-    </div>
+    </>
   );
 }
 
-export default ShareTweet;
+export default React.memo(ShareTweet);

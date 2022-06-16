@@ -21,7 +21,6 @@ import { db, storage } from "../firebase/config";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useAuth } from "../contexts/AuthContext";
 import { Avatar } from "@mui/material";
-import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { useTag } from "../hooks/useTag";
 import { useDispatch } from "react-redux";
 import { TweetCloseModal } from "../store/modalSlice";
@@ -133,7 +132,7 @@ const Input = React.memo(({ lightTheme }: Props) => {
       />
       <div className="w-full">
         <div className={`${selectedFile && "pb-7"} ${input && "space-y-2.5"}`}>
-          <TextareaAutosize
+          <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="What's happening?"

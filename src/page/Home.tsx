@@ -1,18 +1,19 @@
 import Feed from "../components/Feed";
-import Sidebar from "../components/Sidebar";
 import { dimModeState, lightModeState } from "../atoms/modalAtom";
 import { useRecoilState } from "recoil";
-import TransitionsModal from "../components/ModalPage";
-import RightSidebar from "../components/right sidebar/RightSidebar";
 import useTitle from "../hooks/useTitle";
 // import MessagesDrawer from "../components/Messages/MessagesDrawer";
 import { useSelector } from "react-redux";
-import TweetSpeedDial from "../components/TweetSpeedDial";
-import DrawerOnMobile from "../components/DrawerOnMobile";
 import MediaQuery from "react-responsive";
 import { onSnapshot, query, collection, orderBy } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db } from "../firebase/config";
+
+import TweetSpeedDial from "../components/TweetSpeedDial";
+import DrawerOnMobile from "../components/DrawerOnMobile";
+import TransitionsModal from "../components/ModalPage";
+import RightSidebar from "../components/right sidebar/RightSidebar";
+import Sidebar from "../components/sidebar/Sidebar";
 
 function Home() {
   const modal = useSelector((state: any) => state.modal.showModal);
@@ -76,3 +77,11 @@ function Home() {
 }
 
 export default Home;
+
+// const TweetSpeedDial = React.lazy(() => import("../components/TweetSpeedDial"));
+// const DrawerOnMobile = React.lazy(() => import("../components/DrawerOnMobile"));
+// const TransitionsModal = React.lazy(() => import("../components/ModalPage"));
+// const RightSidebar = React.lazy(
+//   () => import("../components/right sidebar/RightSidebar")
+// );
+// const Sidebar = React.lazy(() => import("../components/sidebar/Sidebar"));

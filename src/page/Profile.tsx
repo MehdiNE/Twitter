@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { dimModeState, lightModeState } from "../atoms/modalAtom";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import ProfileFeed from "../components/profile/ProfileFeed";
 import ProfileMoal from "../components/profile/ProfileMoal";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/sidebar/Sidebar";
 import { db } from "../firebase/config";
 import { useAuth } from "../contexts/AuthContext";
 import { useParams } from "react-router-dom";
@@ -26,7 +32,11 @@ function Profile() {
   //get current user posts
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      query(collection(db, "posts"), where("id", "==", id)),
+      query(
+        collection(db, "posts"),
+        orderBy("timestamp", "desc"),
+        where("id", "==", id)
+      ),
       (snapshot) => {
         setPosts(snapshot?.docs);
       }
@@ -57,7 +67,7 @@ function Profile() {
     <main
       className={`dark:bg-black  min-w-full min-h-screen flex max-w-[1500px] mx-auto ${
         dimTheme && "bg-[#15202b]"
-      } ${lightTheme && "bg-white"}`}
+      } ${lightTheme && "bg-white text-black"}`}
     >
       <Sidebar />
       <ProfileFeed

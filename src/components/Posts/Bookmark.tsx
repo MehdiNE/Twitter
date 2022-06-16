@@ -6,9 +6,11 @@ import { useDispatch } from "react-redux";
 import { useAuth } from "../../contexts/AuthContext";
 import { db } from "../../firebase/config";
 import { openAlert, severityAlert, messageAlert } from "../../store/AlertSlice";
+import { Player } from "@lottiefiles/react-lottie-player";
 
 function Bookmark({ post, id }: any) {
   const [bookmarks, setBookmarks] = useState(false);
+  const [showBookmark, setShowBookmark] = useState(false);
   const { currentUser } = useAuth();
   const dispatch = useDispatch();
 
@@ -34,24 +36,40 @@ function Bookmark({ post, id }: any) {
     dispatch(messageAlert("Tweet added to your Bookmarks"));
   };
   return (
-    <div>
+    <>
       <Tooltip
         title="Bookmark"
         className="icon group"
         onClick={(e) => {
           e.stopPropagation();
+          setShowBookmark(true);
         }}
       >
         <button>
           {bookmarks ? (
-            <BsBookmarkCheckFill
-              onClick={() => {
-                deleteBookmarks();
-              }}
-              size={20}
-            />
+            <>
+              <BsBookmarkCheckFill
+                className="text-[#6edcda] opacity-80"
+                onClick={() => {
+                  deleteBookmarks();
+                }}
+                size={20}
+              />
+              {showBookmark && (
+                <div onClick={() => deleteBookmarks()}>
+                  <Player
+                    autoplay={true}
+                    keepLastFrame
+                    loop={false}
+                    src="https://assets10.lottiefiles.com/datafiles/SkdS7QDyJTKTdwA/data.json"
+                    style={{ height: "44px", width: "44px" }}
+                  ></Player>
+                </div>
+              )}
+            </>
           ) : (
             <BsBookmark
+              className="text-[#6edcda] opacity-80"
               onClick={() => {
                 addToBookmarks();
               }}
@@ -60,8 +78,8 @@ function Bookmark({ post, id }: any) {
           )}
         </button>
       </Tooltip>
-    </div>
+    </>
   );
 }
 
-export default Bookmark;
+export default React.memo(Bookmark);

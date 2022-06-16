@@ -13,18 +13,18 @@ import {
 import { Avatar } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { useTag } from "../hooks/useTag";
+import { useTag } from "../../hooks/useTag";
 import { BsThreeDots, BsTwitter } from "react-icons/bs";
-import useLogout from "../hooks/useLogout";
+import useLogout from "../../hooks/useLogout";
 import { ClipLoader } from "react-spinners";
-import { useGetUser } from "../hooks/useGetUser";
-import { useAuth } from "../contexts/AuthContext";
-import ThemeSelector from "./ThemeSelector";
+import { useGetUser } from "../../hooks/useGetUser";
+import { useAuth } from "../../contexts/AuthContext";
+import ThemeSelector from "../ThemeSelector";
 import { useRecoilState } from "recoil";
-import { lightModeState } from "../atoms/modalAtom";
-import { TweetOpenModal } from "../store/modalSlice";
+import { lightModeState } from "../../atoms/modalAtom";
+import { TweetOpenModal } from "../../store/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
-import TweetModal from "./tweetModal";
+import TweetModal from "../tweetModal";
 import { Link } from "react-router-dom";
 
 const Sidebar = React.memo(() => {

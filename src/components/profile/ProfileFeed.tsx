@@ -59,7 +59,6 @@ function ProfileFeed({
   dimTheme,
   lightTheme,
 }: Props) {
-  //redux
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -102,7 +101,7 @@ function ProfileFeed({
       >
         <BsArrowLeft
           size={18}
-          className="cursor-pointer text-white"
+          className="cursor-pointer"
           onClick={() => {
             navigate("/");
           }}
@@ -317,7 +316,12 @@ function ProfileFeed({
 
       <div className="pb-72">
         {posts.map((post: any) => (
-          <Post post={post.data()} key={post.id} id={post.id} />
+          <Post
+            post={post.data()}
+            key={post.id}
+            id={post.id}
+            lightTheme={lightTheme}
+          />
         ))}
       </div>
     </div>

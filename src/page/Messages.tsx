@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { dimModeState, lightModeState } from "../atoms/modalAtom";
 import MessagesFeed from "../components/Messages/MessagesFeed";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/sidebar/Sidebar";
 import { db } from "../firebase/config";
 
 function Messages() {

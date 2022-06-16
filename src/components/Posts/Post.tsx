@@ -1,15 +1,21 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
 import Moment from "react-moment";
 import { Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import ShareTweet from "./ShareTweet";
 
 //Icons components
-import Bookmark from "./Bookmark";
-import Like from "./Like";
-import Trash from "./Trash";
-import Reply from "./Reply";
+// import Bookmark from "./Bookmark";
+// import ShareTweet from "./ShareTweet";
+// import Like from "./Like";
+// import Trash from "./Trash";
+// import Reply from "./Reply";
+
+const Bookmark = React.lazy(() => import("./Bookmark"));
+const ShareTweet = React.lazy(() => import("./ShareTweet"));
+const Like = React.lazy(() => import("./Like"));
+const Trash = React.lazy(() => import("./Trash"));
+const Reply = React.lazy(() => import("./Reply"));
 
 const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
   const navigate = useNavigate();
@@ -23,7 +29,7 @@ const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
         onClick={() => navigate(`/${id}`)}
       >
         {!postPage && (
-          <div onClick={(e) => {}}>
+          <div>
             <Avatar
               src={post?.userImg}
               alt=""
@@ -53,7 +59,7 @@ const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
                 <h4
                   className={`font-bold text-[15px] sm:text-base group-hover:underline ${
                     !postPage && "inline-block"
-                  } ${lightTheme ? "text-black" : "text-[#d9d9d9]"}`}
+                  } ${lightTheme ? "text-gray-900" : "text-[#d9d9d9]"}`}
                 >
                   {post?.username}
                 </h4>
@@ -68,7 +74,11 @@ const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
                 <Moment fromNow>{post?.timestamp?.toDate()}</Moment>
               </span>
               {!postPage && (
-                <p className="text-[#d9d9d9] text-[15px] sm:text-base mt-0.5">
+                <p
+                  className={`${
+                    lightTheme ? "text-gray-900" : "text-[#d9d9d9]"
+                  } text-[15px] sm:text-base mt-0.5`}
+                >
                   {post?.text}
                 </p>
               )}
@@ -78,7 +88,13 @@ const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
             </div>
           </div>
           {postPage && (
-            <p className="text-[#d9d9d9] mt-0.5 text-xl">{post?.text}</p>
+            <p
+              className={`${
+                lightTheme ? "text-gray-900" : "text-[#d9d9d9]"
+              } mt-0.5 text-xl `}
+            >
+              {post?.text}
+            </p>
           )}
           <img
             src={post?.image}
@@ -101,9 +117,9 @@ const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
 
             <Like id={id} />
 
-            <ShareTweet id={id} />
-
             <Bookmark post={post} id={id} />
+
+            <ShareTweet id={id} />
           </div>
         </div>
       </div>

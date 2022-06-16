@@ -45,7 +45,7 @@ export const useSignup = () => {
         location: {
           label: "not selected",
         },
-        website: "not selected",
+        website: "https://github.com/MehdiNE/Twitter",
         verified: false,
         timestamp: serverTimestamp(),
       };

@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { lightModeState } from "../atoms/modalAtom";
+import { lightModeState } from "../../atoms/modalAtom";
 
 interface Props {
   text: string;

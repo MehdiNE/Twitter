@@ -5,10 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 function MessagesFeed({ users, dimTheme, lightTheme }: any) {
   const navigate = useNavigate();
-  console.log(
-    "🚀 ~ file: MessagesFeed.tsx ~ line 4 ~ MessagesFeed ~ users",
-    users
-  );
+
   return (
     <div
       className={`flex-grow border-l border-r max-w-2xl sm:ml-[73px] xl:ml-[370px] ${

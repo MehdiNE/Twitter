@@ -26,32 +26,30 @@ function Reply({ id }: Props) {
   }, [id]);
 
   return (
-    <div>
-      <div
-        className="flex items-center space-x-1 group"
-        onClick={(e) => {
-          e.stopPropagation();
-          // setPostId(id);
-          dispatch(postState(id));
-          dispatch(openModal());
-        }}
+    <div
+      className="flex items-center space-x-1 group"
+      onClick={(e) => {
+        e.stopPropagation();
+        // setPostId(id);
+        dispatch(postState(id));
+        dispatch(openModal());
+      }}
+    >
+      <Tooltip
+        title="Reply"
+        className="icon group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10"
       >
-        <Tooltip
-          title="Reply"
-          className="icon group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10"
-        >
-          <button>
-            <HiOutlineChat className="h-5 group-hover:text-[#1d9bf0]" />
-          </button>
-        </Tooltip>
-        {comments.length > 0 && (
-          <span className="group-hover:text-[#1d9bf0] text-sm">
-            {comments.length}
-          </span>
-        )}
-      </div>
+        <button>
+          <HiOutlineChat className="h-5 group-hover:text-[#1d9bf0]" />
+        </button>
+      </Tooltip>
+      {comments.length > 0 && (
+        <span className="group-hover:text-[#1d9bf0] text-sm">
+          {comments.length}
+        </span>
+      )}
     </div>
   );
 }
 
-export default Reply;
+export default React.memo(Reply);

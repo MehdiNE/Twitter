@@ -1,14 +1,13 @@
 import { Avatar } from "@mui/material";
 import {
   HiDotsHorizontal,
-  HiOutlineChartBar,
   HiOutlineChat,
   HiOutlineHeart,
   HiOutlineShare,
 } from "react-icons/hi";
 import Moment from "react-moment";
 
-function Comment({ comment, id }: any) {
+function Comment({ comment, lightTheme }: any) {
   return (
     <div className="p-3 flex cursor-pointer border-b border-gray-700">
       <Avatar src={comment?.userImg} alt="" className="mr-4" />
@@ -16,7 +15,11 @@ function Comment({ comment, id }: any) {
         <div className="flex justify-between">
           <div className="text-[#6e767d]">
             <div className="inline-block group">
-              <h4 className="font-bold text-[#d9d9d9] text-[15px] sm:text-base inline-block group-hover:underline">
+              <h4
+                className={` ${
+                  lightTheme ? "text-gray-900" : "text-[#d9d9d9]"
+                } font-bold text-[#d9d9d9] text-[15px] sm:text-base inline-block group-hover:underline`}
+              >
                 {comment?.username}
               </h4>
               <span className="ml-1.5 text-sm sm:text-[15px]">
@@ -27,7 +30,11 @@ function Comment({ comment, id }: any) {
             <span className="hover:underline text-sm sm:text-[15px]">
               <Moment fromNow>{comment?.timestamp?.toDate()}</Moment>
             </span>
-            <p className="text-[#d9d9d9] mt-0.5 max-w-lg text-[15px] sm:text-base">
+            <p
+              className={`${
+                lightTheme ? "text-gray-900" : "text-[#d9d9d9]"
+              }  mt-0.5 max-w-lg text-[15px] sm:text-base`}
+            >
               {comment?.comment}
             </p>
           </div>
@@ -54,18 +61,18 @@ function Comment({ comment, id }: any) {
 
         <div className="text-[#6e767d] flex justify-between w-10/12">
           <div className="icon group">
-            <HiOutlineChat className="h-5 group-hover:text-[#1d9bf0]" />
+            <HiOutlineChat className="h-5 group-hover:text-[#1d9bf0] opacity-50" />
           </div>
 
           <div className="flex items-center space-x-1 group">
             <div className="icon group-hover:bg-pink-600/10">
-              <HiOutlineHeart className="h-5 group-hover:text-pink-600" />
+              <HiOutlineHeart className="h-5 group-hover:text-pink-600 opacity-50" />
             </div>
             <span className="group-hover:text-pink-600 text-sm"></span>
           </div>
 
           <div className="icon group">
-            <HiOutlineShare className="h-5 group-hover:text-[#1d9bf0]" />
+            <HiOutlineShare className="h-5 group-hover:text-[#1d9bf0] opacity-50" />
           </div>
         </div>
       </div>

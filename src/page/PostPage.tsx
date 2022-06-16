@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/sidebar/Sidebar";
 import { dimModeState, lightModeState } from "../atoms/modalAtom";
 import { useRecoilState } from "recoil";
 import TransitionsModal from "../components/ModalPage";
@@ -17,11 +17,13 @@ import Post from "../components/Posts/Post";
 import { BsArrowLeft } from "react-icons/bs";
 import RightSidebar from "../components/right sidebar/RightSidebar";
 import { useSelector } from "react-redux";
+import { ClipLoader } from "react-spinners";
 
 function PostPage() {
   const modal = useSelector((state: any) => state.modal.showModal);
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
   const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
   const navigate = useNavigate();
@@ -29,8 +31,10 @@ function PostPage() {
   let { id }: any = useParams();
 
   useEffect(() => {
+    setIsLoading(true);
     const unsubscribe = onSnapshot(doc(db, "posts", id), (snapshot: any) => {
       setPost(snapshot.data());
+      setIsLoading(false);
     });
     return () => {
       unsubscribe();
@@ -79,7 +83,15 @@ function PostPage() {
             Tweet
           </div>
 
-          <Post id={id} post={post} postPage />
+          {isLoading && (
+            <div className="text-center mt-10">
+              <ClipLoader color="#1DA1F2" />
+            </div>
+          )}
+          {!isLoading && (
+            <Post id={id} post={post} postPage lightTheme={lightTheme} />
+          )}
+
           {comments.length > 0 && (
             <div className="pb-72">
               {comments.map((comment: any) => (
@@ -87,6 +99,7 @@ function PostPage() {
                   key={comment.id}
                   id={comment.id}
                   comment={comment.data()}
+                  lightTheme={lightTheme}
                 />
               ))}
             </div>

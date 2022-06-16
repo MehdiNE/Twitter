@@ -3,9 +3,11 @@ import { deleteDoc, doc } from "firebase/firestore";
 import React from "react";
 import { FaRetweet } from "react-icons/fa";
 import { HiOutlineTrash } from "react-icons/hi";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { db } from "../../firebase/config";
+import { openAlert, severityAlert, messageAlert } from "../../store/AlertSlice";
 
 interface Props {
   post: string;
@@ -15,6 +17,15 @@ interface Props {
 function Trash({ post, id }: Props) {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    deleteDoc(doc(db, "posts", id));
+    navigate("/");
+    dispatch(openAlert());
+    dispatch(severityAlert("error"));
+    dispatch(messageAlert("Tweet removed from database"));
+  };
 
   return (
     <div>
@@ -23,8 +34,7 @@ function Trash({ post, id }: Props) {
           className="flex items-center space-x-1 group"
           onClick={(e) => {
             e.stopPropagation();
-            deleteDoc(doc(db, "posts", id));
-            navigate("/");
+            handleDelete();
           }}
         >
           <div className="icon group-hover:bg-red-600/10">
@@ -53,4 +63,4 @@ function Trash({ post, id }: Props) {
   );
 }
 
-export default Trash;
+export default React.memo(Trash);

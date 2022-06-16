@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { dimModeState, lightModeState } from "../atoms/modalAtom";
 import Post from "../components/Posts/Post";
 import RightSidebar from "../components/right sidebar/RightSidebar";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/sidebar/Sidebar";
 import { useAuth } from "../contexts/AuthContext";
 import { db } from "../firebase/config";
 import MediaQuery from "react-responsive";
@@ -16,7 +16,6 @@ function Bookmarks() {
   const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
   const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
   const [posts, setPosts] = useState([]);
-  console.log("🚀 ~ file: Bookmarks.tsx ~ line 19 ~ Bookmarks ~ posts", posts);
   const [isLoading, setIsLoading] = useState(false);
 
   const { currentUser } = useAuth();

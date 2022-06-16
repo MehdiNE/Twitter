@@ -1,30 +1,27 @@
 import React, { Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
-import Signup from "./page/Signup";
 import { useAuth } from "./contexts/AuthContext";
 import "./styles/global.css";
 import ForgetPassword from "./page/ForgetPassword";
-import Profile from "./page/Profile";
 import { Offline, Online } from "react-detect-offline";
 import { useRecoilState } from "recoil";
 import { darkModeState } from "./atoms/modalAtom";
-import Messages from "./page/Messages";
-import Bookmarks from "./page/Bookmarks";
-import TransitionsModal from "./components/ModalPage";
 import { useSelector } from "react-redux";
 import AlertComponent from "./UI/Alert";
 import MediaQuery from "react-responsive";
-import MobileBottomNavigation from "./components/MobileBottomNavigation";
 
 const Home = React.lazy(() => import("./page/Home"));
+const Signup = React.lazy(() => import("./page/Signup"));
+const Profile = React.lazy(() => import("./page/Profile"));
+const Bookmarks = React.lazy(() => import("./page/Bookmarks"));
+const Messages = React.lazy(() => import("./page/Messages"));
 const PostPage = React.lazy(() => import("./page/PostPage"));
 const Login = React.lazy(() => import("./page/Login"));
-
-//use redux toolkit
-//add copy to clipboard functionality
-//add share functionality
-//follow system alert
+const MobileBottomNavigation = React.lazy(() =>
+  import("./components/MobileBottomNavigation")
+);
+const TransitionsModal = React.lazy(() => import("./components/ModalPage"));
 
 function App() {
   const { currentUser } = useAuth();
@@ -81,7 +78,16 @@ function App() {
               </Suspense>
             }
           />
-          <Route path="/resetpassword" element={<ForgetPassword />} />
+
+          <Route
+            path="/resetpassword"
+            element={
+              <Suspense>
+                <ForgetPassword />{" "}
+              </Suspense>
+            }
+          />
+
           <Route
             path="/profile/:id"
             element={
@@ -97,8 +103,22 @@ function App() {
             }
           />
           <Route path="/resetpassword" element={<ForgetPassword />} />
-          <Route path="/messages/:id" element={<Messages />} />
-          <Route path="/bookmarks" element={<Bookmarks />} />
+          <Route
+            path="/messages/:id"
+            element={
+              <Suspense>
+                <Messages />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/bookmarks"
+            element={
+              <Suspense>
+                <Bookmarks />
+              </Suspense>
+            }
+          />
 
           <Route
             path="*"
@@ -128,3 +148,9 @@ function App() {
 }
 
 export default App;
+// import Signup from "./page/Signup";
+// import Profile from "./page/Profile";
+// import Bookmarks from "./page/Bookmarks";
+// import Messages from "./page/Messages";
+// import MobileBottomNavigation from "./components/MobileBottomNavigation";
+// import TransitionsModal from "./components/ModalPage";

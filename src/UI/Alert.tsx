@@ -2,7 +2,7 @@ import React from "react";
 import { Snackbar } from "@mui/material";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { useDispatch, useSelector } from "react-redux";
-import { closeAlert, openAlert } from "../store/AlertSlice";
+import { closeAlert } from "../store/AlertSlice";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -12,7 +12,6 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 function AlertComponent() {
-  //   const [open, setOpen] = React.useState(false);
   const open = useSelector((state: any) => state.alert.showAlert);
   const severity = useSelector((state: any) => state.alert.showSeverityAlert);
   const message = useSelector((state: any) => state.alert.showMessageAlert);
@@ -29,18 +28,16 @@ function AlertComponent() {
     dispatch(closeAlert());
   };
   return (
-    <div>
-      <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
-        <Alert
-          onClose={handleClose}
-          severity={severity}
-          sx={{ width: "100%" }}
-          className="mb-10 sm:mb-0"
-        >
-          {message}
-        </Alert>
-      </Snackbar>
-    </div>
+    <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+      <Alert
+        onClose={handleClose}
+        severity={severity}
+        sx={{ width: "100%" }}
+        className="mb-10 sm:mb-0"
+      >
+        {message}
+      </Alert>
+    </Snackbar>
   );
 }
 

@@ -15,6 +15,7 @@ import {
   uploadBytesResumable,
   uploadString,
 } from "firebase/storage";
+import { openAlert, severityAlert, messageAlert } from "../../store/AlertSlice";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -104,6 +105,10 @@ function ProfileMoal({ userData }) {
               updateDoc(docRef, {
                 headerPic: downloadURL,
               });
+              console.log(
+                "🚀 ~ file: ProfileMoal.jsx ~ line 107 ~ getDownloadURL ~ downloadURL",
+                downloadURL
+              );
             });
           });
         },
@@ -126,7 +131,10 @@ function ProfileMoal({ userData }) {
 
     setLoading(false);
     dispatch(profileCloseModal());
-    window.location.reload(true);
+    dispatch(openAlert());
+    dispatch(severityAlert("success"));
+    dispatch(messageAlert("changes are successfully applied"));
+    // window.location.reload(true);
   };
 
   //modal
@@ -153,6 +161,7 @@ function ProfileMoal({ userData }) {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
+        keepMounted
         open={modal}
         onClose={handleClose}
         closeAfterTransition
@@ -323,6 +332,7 @@ function ProfileMoal({ userData }) {
                         location
                       </span>
                       <Select
+                        className="text-black"
                         options={options}
                         defaultInputValue={userData[0]?.location?.label}
                         value={value}
