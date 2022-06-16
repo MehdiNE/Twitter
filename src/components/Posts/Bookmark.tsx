@@ -69,7 +69,6 @@ function Bookmark({ post, id }: any) {
             </>
           ) : (
             <BsBookmark
-              className="text-[#6edcda] opacity-80"
               onClick={() => {
                 addToBookmarks();
               }}

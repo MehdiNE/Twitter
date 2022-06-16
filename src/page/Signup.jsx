@@ -52,7 +52,7 @@ function Signup() {
           className="w-screen h-screen object-cover"
         />
       </div>
-      <div className="flex w-full lg:w-1/2 justify-center items-center bg-black space-y-8">
+      <div className="flex w-full min-h-screen lg:w-1/2 justify-center items-center bg-black space-y-8">
         <div className="w-full px-8 md:px-32 lg:px-24">
           <form onSubmit={handleSubmit} className=" rounded-md shadow-2xl p-5">
             <h1 className="text-white font-bold text-4xl mb-1">
@@ -186,10 +186,10 @@ function Signup() {
                   />
                 ) : (
                   <div className="relative bg-slate-300 rounded-full w-14 h-14">
-                    <img
-                      src="/assets/blank-profile-picture-gd58bd8a73_640.png"
-                      alt="avatar"
-                      className="rounded-full w-14 h-14"
+                    <Avatar
+                      src=""
+                      alt="Avatar"
+                      sx={{ width: "56px", height: "56px" }}
                     />
                   </div>
                 )}

@@ -12,14 +12,14 @@ import AlertComponent from "./UI/Alert";
 import MediaQuery from "react-responsive";
 import MobileBottomNavigation from "./components/MobileBottomNavigation";
 import TransitionsModal from "./components/ModalPage";
+import Signup from "./page/Signup";
+import Login from "./page/Login";
 
 const Home = React.lazy(() => import("./page/Home"));
-const Signup = React.lazy(() => import("./page/Signup"));
 const Profile = React.lazy(() => import("./page/Profile"));
 const Bookmarks = React.lazy(() => import("./page/Bookmarks"));
 const Messages = React.lazy(() => import("./page/Messages"));
 const PostPage = React.lazy(() => import("./page/PostPage"));
-const Login = React.lazy(() => import("./page/Login"));
 
 function App() {
   const { currentUser } = useAuth();
@@ -46,17 +46,7 @@ function App() {
         <Routes>
           <Route
             path="/login"
-            element={
-              <Suspense
-                fallback={
-                  <div className="flex justify-center items-center">
-                    <ClipLoader color="#1DA1F2" />
-                  </div>
-                }
-              >
-                {!currentUser ? <Login /> : <Navigate to="/" />}
-              </Suspense>
-            }
+            element={!currentUser ? <Login /> : <Navigate to="/" />}
           />
           <Route
             path="/signup"
@@ -77,14 +67,7 @@ function App() {
             }
           />
 
-          <Route
-            path="/resetpassword"
-            element={
-              <Suspense>
-                <ForgetPassword />{" "}
-              </Suspense>
-            }
-          />
+          <Route path="/resetpassword" element={<ForgetPassword />} />
 
           <Route
             path="/profile/:id"

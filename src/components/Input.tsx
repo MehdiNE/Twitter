@@ -21,6 +21,7 @@ import { db, storage } from "../firebase/config";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useAuth } from "../contexts/AuthContext";
 import { Avatar } from "@mui/material";
+// import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { useTag } from "../hooks/useTag";
 import { useDispatch } from "react-redux";
 import { TweetCloseModal } from "../store/modalSlice";
