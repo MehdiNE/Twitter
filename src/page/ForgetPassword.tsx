@@ -20,7 +20,6 @@ function ForgetPassword() {
       })
       .catch((err) => {
         setError(err.message);
-        console.log(err);
       });
   };
 

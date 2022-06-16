@@ -88,7 +88,6 @@ function ShareTweet({ id }: any) {
                 url: `https://on.natgeo.com/2zHaNup`,
                 title: "Share this article on Flamingos",
               }}
-              onClick={() => console.info("share successful!")}
             >
               <button className="flex space-x-4 items-center text-gray-200">
                 <HiOutlineShare size={18} className="text-gray-500" />

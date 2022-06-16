@@ -105,10 +105,6 @@ function ProfileMoal({ userData }) {
               updateDoc(docRef, {
                 headerPic: downloadURL,
               });
-              console.log(
-                "🚀 ~ file: ProfileMoal.jsx ~ line 107 ~ getDownloadURL ~ downloadURL",
-                downloadURL
-              );
             });
           });
         },
@@ -125,9 +121,7 @@ function ProfileMoal({ userData }) {
       await updateProfile(currentUser, {
         displayName: name,
       });
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
 
     setLoading(false);
     dispatch(profileCloseModal());

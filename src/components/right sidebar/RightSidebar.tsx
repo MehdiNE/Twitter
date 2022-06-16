@@ -89,7 +89,6 @@ const RightSidebar = React.memo(() => {
                 key={index}
                 onClick={() => {
                   navigate(`/profile/${result?.id}`);
-                  console.log(result.id);
                 }}
               >
                 <Avatar src={result.avatar} alt={result.displayName} />

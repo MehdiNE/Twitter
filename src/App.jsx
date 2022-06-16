@@ -1,6 +1,4 @@
-import React, { Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { ClipLoader } from "react-spinners";
 import { useAuth } from "./contexts/AuthContext";
 import "./styles/global.css";
 import ForgetPassword from "./page/ForgetPassword";
@@ -15,11 +13,16 @@ import TransitionsModal from "./components/ModalPage";
 import Signup from "./page/Signup";
 import Login from "./page/Login";
 
-const Home = React.lazy(() => import("./page/Home"));
-const Profile = React.lazy(() => import("./page/Profile"));
-const Bookmarks = React.lazy(() => import("./page/Bookmarks"));
-const Messages = React.lazy(() => import("./page/Messages"));
-const PostPage = React.lazy(() => import("./page/PostPage"));
+import Home from "./page/Home";
+import Profile from "./page/Profile";
+import Bookmarks from "./page/Bookmarks";
+import Messages from "./page/Messages";
+import PostPage from "./page/PostPage";
+// const Home = React.lazy(() => import("./page/Home"));
+// const Profile = React.lazy(() => import("./page/Profile"));
+// const Bookmarks = React.lazy(() => import("./page/Bookmarks"));
+// const Messages = React.lazy(() => import("./page/Messages"));
+// const PostPage = React.lazy(() => import("./page/PostPage"));
 
 function App() {
   const { currentUser } = useAuth();
@@ -33,7 +36,7 @@ function App() {
           <h1>You are offline!</h1>
           <img
             alt="logo"
-            src="/assets/Error Naughty Dog.svg"
+            src="/assets/Error Naughty Dog.png"
             className="w-80 h-80"
           />
           <p>
@@ -54,66 +57,21 @@ function App() {
           />
           <Route
             path="/:id"
-            element={
-              <Suspense
-                fallback={
-                  <div className="flex justify-center items-center">
-                    <ClipLoader color="#1DA1F2" />
-                  </div>
-                }
-              >
-                {currentUser ? <PostPage /> : <Navigate to="/login" />}
-              </Suspense>
-            }
+            element={currentUser ? <PostPage /> : <Navigate to="/login" />}
           />
 
           <Route path="/resetpassword" element={<ForgetPassword />} />
 
           <Route
             path="/profile/:id"
-            element={
-              <Suspense
-                fallback={
-                  <div className="flex justify-center items-center">
-                    <ClipLoader color="#1DA1F2" />
-                  </div>
-                }
-              >
-                {currentUser ? <Profile /> : <Navigate to="/login" />}
-              </Suspense>
-            }
+            element={currentUser ? <Profile /> : <Navigate to="/login" />}
           />
           <Route path="/resetpassword" element={<ForgetPassword />} />
-          <Route
-            path="/messages/:id"
-            element={
-              <Suspense>
-                <Messages />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/bookmarks"
-            element={
-              <Suspense>
-                <Bookmarks />
-              </Suspense>
-            }
-          />
-
+          <Route path="/messages/:id" element={<Messages />} />
+          <Route path="/bookmarks" element={<Bookmarks />} />
           <Route
             path="*"
-            element={
-              <Suspense
-                fallback={
-                  <div className="flex justify-center items-center">
-                    <ClipLoader color="#1DA1F2" />
-                  </div>
-                }
-              >
-                {currentUser ? <Home /> : <Navigate to="/login" />}
-              </Suspense>
-            }
+            element={currentUser ? <Home /> : <Navigate to="/login" />}
           />
         </Routes>
       </Online>
@@ -129,9 +87,3 @@ function App() {
 }
 
 export default App;
-// import Signup from "./page/Signup";
-// import Profile from "./page/Profile";
-// import Bookmarks from "./page/Bookmarks";
-// import Messages from "./page/Messages";
-// import MobileBottomNavigation from "./components/MobileBottomNavigation";
-// import TransitionsModal from "./components/ModalPage";

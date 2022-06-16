@@ -28,7 +28,7 @@ function Trash({ post, id }: Props) {
   };
 
   return (
-    <div>
+    <>
       {currentUser?.uid === post ? (
         <div
           className="flex items-center space-x-1 group"
@@ -59,7 +59,7 @@ function Trash({ post, id }: Props) {
           </Tooltip>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

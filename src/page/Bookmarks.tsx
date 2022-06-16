@@ -98,7 +98,12 @@ function Bookmarks() {
             ) : (
               <>
                 {posts.map((post: any) => (
-                  <Post post={post.data()} key={post.id} id={post.id} />
+                  <Post
+                    post={post.data()}
+                    key={post.id}
+                    id={post.id}
+                    lightTheme={lightTheme}
+                  />
                 ))}
               </>
             )}

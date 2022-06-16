@@ -37,7 +37,6 @@ function MessagesFeed({ users, dimTheme, lightTheme }: any) {
           key={index}
           onClick={() => {
             navigate(`/messages/${result?.id}`);
-            console.log(result.id);
           }}
         >
           <Avatar src={result.avatar} alt={result.displayName} />
