@@ -10,6 +10,8 @@ import { darkModeState } from "./atoms/modalAtom";
 import { useSelector } from "react-redux";
 import AlertComponent from "./UI/Alert";
 import MediaQuery from "react-responsive";
+import MobileBottomNavigation from "./components/MobileBottomNavigation";
+import TransitionsModal from "./components/ModalPage";
 
 const Home = React.lazy(() => import("./page/Home"));
 const Signup = React.lazy(() => import("./page/Signup"));
@@ -18,10 +20,6 @@ const Bookmarks = React.lazy(() => import("./page/Bookmarks"));
 const Messages = React.lazy(() => import("./page/Messages"));
 const PostPage = React.lazy(() => import("./page/PostPage"));
 const Login = React.lazy(() => import("./page/Login"));
-const MobileBottomNavigation = React.lazy(() =>
-  import("./components/MobileBottomNavigation")
-);
-const TransitionsModal = React.lazy(() => import("./components/ModalPage"));
 
 function App() {
   const { currentUser } = useAuth();
