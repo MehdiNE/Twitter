@@ -11,6 +11,8 @@ import { useRecoilState } from "recoil";
 import { darkModeState } from "./atoms/modalAtom";
 import Messages from "./page/Messages";
 import Bookmarks from "./page/Bookmarks";
+import TransitionsModal from "./components/ModalPage";
+import { useSelector } from "react-redux";
 
 const Home = React.lazy(() => import("./page/Home"));
 const PostPage = React.lazy(() => import("./page/PostPage"));
@@ -24,6 +26,7 @@ const Login = React.lazy(() => import("./page/Login"));
 function App() {
   const { currentUser } = useAuth();
   const [darkTheme, setDarkTheme] = useRecoilState(darkModeState);
+  const modal = useSelector((state) => state.modal.showModal);
 
   return (
     <div className={darkTheme ? "dark" : ""}>
@@ -110,6 +113,8 @@ function App() {
           />
         </Routes>
       </Online>
+
+      {modal && <TransitionsModal />}
     </div>
   );
 }

@@ -9,6 +9,8 @@ import {
 import { FaRetweet } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
 import {
+  arrayRemove,
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -16,6 +18,7 @@ import {
   orderBy,
   query,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase/config";
 import Moment from "react-moment";
@@ -28,27 +31,16 @@ import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { openModal } from "../store/modalSlice";
 import { postState } from "../store/postSlice";
-import { useRecoilState } from "recoil";
-import { bookmarkState } from "../atoms/modalAtom";
 
 const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState(false);
   const [comments, setComments] = useState([]);
-
-  const [bookmarks, setBookmarks] = useState([]);
-  const [bookmarked, setBookmarked] = useState(false);
-  const [bookmarkId, setBookmarkId] = useRecoilState(bookmarkState);
-
-  useEffect(() => {
-    setBookmarkId(id);
-  }, [id, setBookmarkId]);
-
-  const dispatch = useDispatch();
+  const [bookmarks, setBookmarks] = useState(false);
+  const { currentUser } = useAuth();
 
   const navigate = useNavigate();
-
-  const { currentUser } = useAuth();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     onSnapshot(
@@ -84,40 +76,23 @@ const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
       });
     }
   };
+
   //bookmarks
-  // console.log(
-  //   "🚀 ~ file: Post.tsx ~ line 84 ~ addToBookmarks ~ bookmarked",
-  //   bookmarked
-  // );
-  const addToBookmarks = async () => {
-    if (bookmarked) {
-      await deleteDoc(doc(db, "posts", id, "bookmarks", currentUser?.uid));
-    } else {
-      await setDoc(doc(db, "posts", id, "bookmarks", currentUser?.uid), {
-        id: post.id,
-        tag: post.tag,
-        text: post.text,
-        timestamp: post.timestamp,
-        userImg: post.userImg,
-        username: post.username,
-        image: post.image,
-        gif: post.gif,
-      });
-    }
+  useEffect(() => {
+    setBookmarks(post?.bookmarkedBy.includes(currentUser?.uid));
+  }, [currentUser?.uid, post?.bookmarkedBy]);
+
+  const deleteBookmarks = async () => {
+    await updateDoc(doc(db, "posts", id), {
+      bookmarkedBy: arrayRemove(currentUser?.uid),
+    });
   };
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(db, "posts", id, "bookmarks"),
-      (snapshot: any) => {
-        setBookmarks(snapshot?.docs);
-      }
-    );
-
-    return () => {
-      unsubscribe();
-    };
-  }, [id]);
+  const addToBookmarks = async () => {
+    await updateDoc(doc(db, "posts", id), {
+      bookmarkedBy: arrayUnion(currentUser?.uid),
+    });
+  };
 
   return (
     <>
@@ -279,18 +254,27 @@ const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
             >
               <ShareTweet id={id} />
             </div>
+
             <div
               className="icon group"
               onClick={(e) => {
                 e.stopPropagation();
-                addToBookmarks();
               }}
             >
-              {bookmarked && (
-                <BsBookmarkFill onClick={() => setBookmarked(false)} />
-              )}
-              {!bookmarked && (
-                <BsBookmark onClick={() => setBookmarked(true)} />
+              {bookmarks ? (
+                <BsBookmarkFill
+                  onClick={() => {
+                    deleteBookmarks();
+                  }}
+                  size={20}
+                />
+              ) : (
+                <BsBookmark
+                  onClick={() => {
+                    addToBookmarks();
+                  }}
+                  size={20}
+                />
               )}
             </div>
           </div>

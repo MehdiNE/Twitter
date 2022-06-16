@@ -4,8 +4,6 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import { useAuth } from "../contexts/AuthContext";
-import { useRecoilState } from "recoil";
-import { postIdState } from "../atoms/modalAtom";
 import {
   onSnapshot,
   doc,
@@ -63,12 +61,6 @@ export default function TransitionsModal() {
 
   const dispatch = useDispatch();
   const handleClose = () => dispatch(closeModal());
-
-  // const [postId] = useRecoilState(postIdState);
-  console.log(
-    "🚀 ~ file: ModalPage.tsx ~ line 63 ~ TransitionsModal ~ postId",
-    postId
-  );
 
   const { currentUser } = useAuth();
   const navigate = useNavigate();

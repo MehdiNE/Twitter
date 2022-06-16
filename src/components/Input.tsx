@@ -81,6 +81,7 @@ function Input({ lightTheme }: Props) {
       timestamp: serverTimestamp(),
       gif: "",
       image: "",
+      bookmarkedBy: [],
     });
 
     const imgRef = ref(storage, `posts/${docRef.id}/image`);

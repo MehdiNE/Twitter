@@ -9,6 +9,7 @@ import ThemeSelector from "./ThemeSelector";
 import { useState } from "react";
 import { MdLogout } from "react-icons/md";
 import useLogout from "../hooks/useLogout";
+import { BsBookmark } from "react-icons/bs";
 
 interface Props {
   lightTheme: boolean;
@@ -119,6 +120,12 @@ const DrawerOnMobile = ({ lightTheme }: Props) => {
                 <div className="flex space-x-3">
                   <HiOutlineUser size={20} />
                   <span className="inline">Profile</span>
+                </div>
+              </NavLink>
+              <NavLink to="/bookmarks">
+                <div className="flex space-x-3">
+                  <BsBookmark size={18} />
+                  <span className="inline">Bookmarks</span>
                 </div>
               </NavLink>
               <ThemeSelector />
