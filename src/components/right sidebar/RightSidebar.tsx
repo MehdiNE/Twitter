@@ -69,7 +69,7 @@ const RightSidebar = React.memo(() => {
       </div>
 
       <div
-        className={`dark:text-[#d9d9d9] space-y-3 dark:bg-[#15181c] pt-2 rounded-xl w-11/12 xl:w-9/12 ${
+        className={`dark:text-[#d9d9d9] space-y-3 dark:bg-[#15181c] py-2 rounded-xl w-11/12 xl:w-9/12 ${
           lightTheme && "text-black bg-[#f7f9f9]"
         } ${dimTheme && "bg-[#1e2732] text-[#d9d9d9]"}`}
       >

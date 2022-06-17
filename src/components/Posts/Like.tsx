@@ -66,7 +66,7 @@ function Like({ id }: Props) {
                   keepLastFrame
                   loop={false}
                   src="https://assets2.lottiefiles.com/datafiles/hvAaKBDVLhuV5Wl/data.json"
-                  style={{ height: "50px", width: "50px" }}
+                  style={{ height: "44px", width: "44px" }}
                 ></Player>
               )}
             </>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   BsEyeFill,
   BsEyeSlashFill,
@@ -13,6 +13,8 @@ import { ClipLoader } from "react-spinners";
 import { Alert, Avatar, Divider, Typography } from "@mui/material";
 import { useSignup } from "../hooks/useSignup";
 import useTitle from "../hooks/useTitle";
+import { useDispatch } from "react-redux";
+import { allAlert } from "../store/AlertSlice";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -58,7 +60,11 @@ function Signup() {
             <h1 className="text-white font-bold text-4xl mb-1">
               Happening now
             </h1>
-            <p className="font-normal text-white mb-8">Join Twitter today.</p>
+            <p className="font-normal text-white">Join Twitter today.</p>
+            <p className="text-red-200 mb-8">
+              this app only work with a <b>good vpn</b>. make sure your vpn is
+              on
+            </p>
             {error && (
               <Alert className="my-2" severity="error">
                 {error}
@@ -74,13 +80,13 @@ function Signup() {
                 <FcGoogle className="w-6 h-6 mr-2 -ml-1" />
                 Sign up with Google
               </button>
-              <button
+              {/* <button
                 type="button"
                 className="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex justify-center items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 mr-2 mb-2"
               >
                 <BsGithub className="w-5 h-5 mr-2 -ml-1" />
                 Sign up with Github
-              </button>
+              </button> */}
             </div>
 
             {/* Divider */}

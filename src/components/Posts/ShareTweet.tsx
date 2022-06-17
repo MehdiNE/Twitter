@@ -12,7 +12,7 @@ function ShareTweet({ id }: any) {
   const dispatch = useDispatch();
 
   const handleCopy = React.useCallback(() => {
-    const url = `http://localhost:3000/${id}`;
+    const url = `https://twitter-by-mahdi.netlify.app/${id}`;
     clipboard.copy(url);
 
     dispatch(
@@ -89,8 +89,8 @@ function ShareTweet({ id }: any) {
           <div className="flex space-x-4 items-center text-gray-200">
             <RWebShare
               data={{
-                text: "Like humans, flamingos make friends for life",
-                url: `https://on.natgeo.com/2zHaNup`,
+                text: "Check out this post on Twitter by mahdi!",
+                url: `https://twitter-by-mahdi.netlify.app/${id}`,
                 title: "Share this article on Flamingos",
               }}
             >

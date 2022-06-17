@@ -107,8 +107,8 @@ function ProfileFeed({
           }}
         />
         <div className="text-xl font-bold">
-          {userData[0]?.displayName}
-          <span className="inline-block mt-1 ml-1 align-text-bottom text-lg">
+          <span>{userData[0]?.displayName}</span>
+          <span className="inline-block ml-1 text-lg -mb-0.5">
             {userData[0]?.verified && <GoVerified color="white" />}
           </span>
         </div>

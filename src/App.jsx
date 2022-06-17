@@ -30,7 +30,7 @@ function App() {
 
   return (
     <div className={darkTheme ? "dark" : ""}>
-      <Offline className="min-w-screen h-screen bg-black text-white flex justify-center items-center">
+      {/* <Offline className="min-w-screen h-screen bg-black text-white flex justify-center items-center">
         <div className="w-screen h-screen text-white flex justify-center items-center flex-col text-2xl">
           <h1>You are offline!</h1>
           <img
@@ -43,45 +43,44 @@ function App() {
             network status
           </p>
         </div>
-      </Offline>
-      <Online>
-        <Routes>
-          <Route
-            path="/login"
-            element={!currentUser ? <Login /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/signup"
-            element={!currentUser ? <Signup /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/:id"
-            element={currentUser ? <PostPage /> : <Navigate to="/login" />}
-          />
+      </Offline> */}
 
-          <Route path="/resetpassword" element={<ForgetPassword />} />
+      <Routes>
+        <Route
+          path="/login"
+          element={!currentUser ? <Login /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/signup"
+          element={!currentUser ? <Signup /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/:id"
+          element={currentUser ? <PostPage /> : <Navigate to="/login" />}
+        />
 
-          <Route
-            path="/profile/:id"
-            element={
-              currentUser ? (
-                <Suspense fallback={<></>}>
-                  <Profile />
-                </Suspense>
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route path="/resetpassword" element={<ForgetPassword />} />
-          <Route path="/messages/:id" element={<Messages />} />
-          <Route path="/bookmarks" element={<Bookmarks />} />
-          <Route
-            path="*"
-            element={currentUser ? <Home /> : <Navigate to="/login" />}
-          />
-        </Routes>
-      </Online>
+        <Route path="/resetpassword" element={<ForgetPassword />} />
+
+        <Route
+          path="/profile/:id"
+          element={
+            currentUser ? (
+              <Suspense fallback={<></>}>
+                <Profile />
+              </Suspense>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route path="/resetpassword" element={<ForgetPassword />} />
+        <Route path="/messages/:id" element={<Messages />} />
+        <Route path="/bookmarks" element={<Bookmarks />} />
+        <Route
+          path="*"
+          element={currentUser ? <Home /> : <Navigate to="/login" />}
+        />
+      </Routes>
 
       {currentUser && (
         <MediaQuery maxWidth={700}>

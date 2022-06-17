@@ -1,8 +1,12 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
 import Moment from "react-moment";
 import { Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { onSnapshot, query, collection, where } from "firebase/firestore";
+import { db } from "../../firebase/config";
+import { useAuth } from "../../contexts/AuthContext";
+import { GoVerified } from "react-icons/go";
 
 const Bookmark = React.lazy(() => import("./Bookmark"));
 const ShareTweet = React.lazy(() => import("./ShareTweet"));
@@ -12,6 +16,24 @@ const Reply = React.lazy(() => import("./Reply"));
 
 const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
+
+  const [users, setUsers] = useState<any>([]);
+  console.log("🚀 ~ file: Post.tsx ~ line 21 ~ Post ~ users", users);
+  const userData = users.map((data: any) => data.data());
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      query(collection(db, "users"), where("id", "==", currentUser?.uid)),
+      (snapshot) => {
+        setUsers(snapshot?.docs);
+      }
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  }, [currentUser?.uid]);
 
   return (
     <>
@@ -56,6 +78,11 @@ const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
                 >
                   {post?.username}
                 </h4>
+                <span>
+                  <span className="inline-block ml-1 text-sm -mb-0.5">
+                    {userData[0]?.verified && <GoVerified color="white" />}
+                  </span>
+                </span>
                 <span
                   className={`text-sm sm:text-[15px] ${!postPage && "ml-1.5"}`}
                 >

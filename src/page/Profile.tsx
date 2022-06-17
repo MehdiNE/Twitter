@@ -10,7 +10,7 @@ import Sidebar from "../components/sidebar/Sidebar";
 import { db } from "../firebase/config";
 import { useAuth } from "../contexts/AuthContext";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProfileMoal from "../components/profile/ProfileMoal";
 
 const RightSidebar = React.lazy(
@@ -66,7 +66,7 @@ function Profile() {
     return () => {
       unsubscribe();
     };
-  }, [currentUser.uid, id]);
+  }, [id]);
 
   return (
     <main

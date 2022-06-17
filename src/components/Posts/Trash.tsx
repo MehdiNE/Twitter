@@ -58,7 +58,17 @@ function Trash({ post, id }: Props) {
           }}
         >
           <Tooltip title="Retweet" className="icon group-hover:bg-green-500/10">
-            <button>
+            <button
+              onClick={() =>
+                dispatch(
+                  allAlert({
+                    alertState: true,
+                    alertSeverity: "error",
+                    alertMessage: "Retweet functionality is not ready yet!",
+                  })
+                )
+              }
+            >
               <FaRetweet className="h-5 group-hover:text-green-500" />
             </button>
           </Tooltip>
