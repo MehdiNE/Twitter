@@ -30,8 +30,8 @@ function Login() {
           className="w-screen h-screen object-cover"
         />
       </div>
-      <div className="flex w-full lg:w-1/2 justify-center items-center bg-black space-y-8">
-        <div className="w-full px-8 md:px-32 lg:px-24">
+      <div className="flex w-full min-h-screen lg:w-1/2 justify-center items-center bg-black space-y-8">
+        <div className="w-full px-2 md:px-32 lg:px-24">
           <form onSubmit={handleSubmit} className="rounded-md shadow-2xl p-5">
             <h1 className="text-white font-bold text-4xl mb-1">Hello Again!</h1>
             <p className="font-normal text-white mb-8">Welcome Back</p>

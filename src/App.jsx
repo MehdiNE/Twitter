@@ -13,16 +13,14 @@ import Login from "./page/Login";
 import Bookmarks from "./page/Bookmarks";
 import Messages from "./page/Messages";
 import PostPage from "./page/PostPage";
+import Home from "./page/Home";
 
-const Home = React.lazy(() => import("./page/Home"));
+// const Home = React.lazy(() => import("./page/Home"));
 const Profile = React.lazy(() => import("./page/Profile"));
 const MobileBottomNavigation = React.lazy(() =>
   import("./components/MobileBottomNavigation")
 );
 const TransitionsModal = React.lazy(() => import("./components/ModalPage"));
-
-//implemant pwa
-//custom hooks
 
 function App() {
   const { currentUser } = useAuth();
@@ -80,24 +78,18 @@ function App() {
           <Route path="/bookmarks" element={<Bookmarks />} />
           <Route
             path="*"
-            element={
-              currentUser ? (
-                <Suspense fallback={<p>Loading...</p>}>
-                  <Home />
-                </Suspense>
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
+            element={currentUser ? <Home /> : <Navigate to="/login" />}
           />
         </Routes>
       </Online>
 
-      <MediaQuery maxWidth={700}>
-        <Suspense fallback={<></>}>
-          <MobileBottomNavigation />
-        </Suspense>
-      </MediaQuery>
+      {currentUser && (
+        <MediaQuery maxWidth={700}>
+          <Suspense fallback={<></>}>
+            <MobileBottomNavigation />
+          </Suspense>
+        </MediaQuery>
+      )}
 
       <AlertComponent />
       {modal && (

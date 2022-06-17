@@ -4,13 +4,6 @@ import Moment from "react-moment";
 import { Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-//Icons components
-// import Bookmark from "./Bookmark";
-// import ShareTweet from "./ShareTweet";
-// import Like from "./Like";
-// import Trash from "./Trash";
-// import Reply from "./Reply";
-
 const Bookmark = React.lazy(() => import("./Bookmark"));
 const ShareTweet = React.lazy(() => import("./ShareTweet"));
 const Like = React.lazy(() => import("./Like"));
@@ -107,7 +100,7 @@ const Post = React.memo(({ post, id, postPage, lightTheme }: any) => {
             className="rounded-2xl max-h-[500px] object-cover mr-2"
           />
           <div
-            className={`text-[#6e767d] flex justify-between w-10/12 ${
+            className={`text-[#6e767d] flex justify-between w-full ${
               postPage && "mx-auto"
             }`}
           >

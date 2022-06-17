@@ -11,15 +11,13 @@ import { db } from "../firebase/config";
 import { useAuth } from "../contexts/AuthContext";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import ProfileMoal from "../components/profile/ProfileMoal";
 
 const RightSidebar = React.lazy(
   () => import("../components/right sidebar/RightSidebar")
 );
 const ProfileFeed = React.lazy(
   () => import("../components/profile/ProfileFeed")
-);
-const ProfileMoal = React.lazy(
-  () => import("../components/profile/ProfileMoal")
 );
 
 function Profile() {
@@ -78,7 +76,7 @@ function Profile() {
     >
       <Sidebar />
 
-      <Suspense fallback={<p>Loading</p>}>
+      <Suspense fallback={<></>}>
         <ProfileFeed
           userData={userData}
           posts={posts}
@@ -89,13 +87,11 @@ function Profile() {
         />
       </Suspense>
 
-      <Suspense fallback={<p>Loading</p>}>
+      <Suspense fallback={<></>}>
         <RightSidebar />
       </Suspense>
 
-      <Suspense fallback={<p>Loading</p>}>
-        {modal && <ProfileMoal userData={userData} />}
-      </Suspense>
+      {modal && <ProfileMoal userData={userData} />}
     </main>
   );
 }

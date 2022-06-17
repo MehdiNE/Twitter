@@ -23,8 +23,8 @@ function Bookmarks() {
   let empteyPost;
   if (posts.length === 0) {
     empteyPost = (
-      <div className="text-center text-gray-200 mt-7 mx-16">
-        <h3 className="font-bold text-lg">
+      <div className="text-center text-gray-200 mt-7 mx-7 sm:mx-16">
+        <h3 className="font-bold text-base sm:text-lg">
           Looks like you haven't bookmarked any posts 😢
         </h3>
         <p>tap the bookmark icon on any posts to add to your bookmark!</p>

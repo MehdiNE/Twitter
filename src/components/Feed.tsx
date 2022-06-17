@@ -23,7 +23,7 @@ function Feed({ lightTheme, dimTheme, posts, isLoading, error }: Props) {
 
   return (
     <div
-      className={`flex-grow border-l border-r max-w-2xl sm:ml-[73px] xl:ml-[370px] ${
+      className={`flex-grow sm:border-l sm:border-r max-w-2xl sm:ml-[73px] xl:ml-[370px] ${
         lightTheme ? "border-gray-200" : "border-gray-700"
       }`}
     >

@@ -26,14 +26,14 @@ function ForgetPassword() {
   useTitle("Reset password | Twitter By Mahdi");
 
   return (
-    <div className="flex justify-center items-center flex-col text-white h-screen">
+    <div className="flex justify-center items-center flex-col text-white min-h-screen bg-gray-900">
       <div className="w-[400px] mb-4">
         {message && <Alert severity="success">{message}</Alert>}
         {error && <Alert severity="error">{error}</Alert>}
       </div>
       <form
         onSubmit={handleSubmit}
-        className="w-[400px] h-96 border p-10 pt-4 rounded space-y-7 bg-gray-900 autofill:bg-slate-900"
+        className="w-[350px] h-96 border p-7 pt-4 rounded space-y-7 bg-gray-900 autofill:bg-slate-900"
       >
         <h3 className="text-center mt-10">
           Enter your email address and we'll send you a link to reset ypur

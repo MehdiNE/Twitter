@@ -53,7 +53,7 @@ function Signup() {
         />
       </div>
       <div className="flex w-full min-h-screen lg:w-1/2 justify-center items-center bg-black space-y-8">
-        <div className="w-full px-8 md:px-32 lg:px-24">
+        <div className="w-full px-2 md:px-32 lg:px-24">
           <form onSubmit={handleSubmit} className=" rounded-md shadow-2xl p-5">
             <h1 className="text-white font-bold text-4xl mb-1">
               Happening now
@@ -176,6 +176,7 @@ function Signup() {
                     onChange={addImage}
                     multiple={false}
                     required
+                    accept="image/*"
                   />
                 </div>
                 {avatar ? (
