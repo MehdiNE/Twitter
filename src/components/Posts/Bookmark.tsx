@@ -5,7 +5,7 @@ import { BsBookmarkCheckFill, BsBookmark } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { useAuth } from "../../contexts/AuthContext";
 import { db } from "../../firebase/config";
-import { openAlert, severityAlert, messageAlert } from "../../store/AlertSlice";
+import { allAlert } from "../../store/AlertSlice";
 import { Player } from "@lottiefiles/react-lottie-player";
 
 function Bookmark({ post, id }: any) {
@@ -22,18 +22,28 @@ function Bookmark({ post, id }: any) {
     await updateDoc(doc(db, "posts", id), {
       bookmarkedBy: arrayRemove(currentUser?.uid),
     });
-    dispatch(openAlert());
-    dispatch(severityAlert("success"));
-    dispatch(messageAlert("Tweet removed from your Bookmarks"));
+
+    dispatch(
+      allAlert({
+        alertState: true,
+        alertSeverity: "success",
+        alertMessage: "Tweet removed from your Bookmarks",
+      })
+    );
   };
 
   const addToBookmarks = async () => {
     await updateDoc(doc(db, "posts", id), {
       bookmarkedBy: arrayUnion(currentUser?.uid),
     });
-    dispatch(openAlert());
-    dispatch(severityAlert("success"));
-    dispatch(messageAlert("Tweet added to your Bookmarks"));
+
+    dispatch(
+      allAlert({
+        alertState: true,
+        alertSeverity: "success",
+        alertMessage: "Tweet added to your Bookmarks",
+      })
+    );
   };
   return (
     <>

@@ -3,7 +3,6 @@ import SidebarList from "./SidebarList";
 import {
   HiHome,
   HiHashtag,
-  HiOutlineBell,
   HiOutlineInbox,
   HiOutlineClipboardList,
   HiOutlineBookmark,
@@ -20,23 +19,22 @@ import { ClipLoader } from "react-spinners";
 import { useGetUser } from "../../hooks/useGetUser";
 import { useAuth } from "../../contexts/AuthContext";
 import ThemeSelector from "../ThemeSelector";
-import { useRecoilState } from "recoil";
-import { lightModeState } from "../../atoms/modalAtom";
 import { TweetOpenModal } from "../../store/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import TweetModal from "../tweetModal";
 import { Link } from "react-router-dom";
 
 const Sidebar = React.memo(() => {
-  const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
   const { logout, error, isLoading } = useLogout();
   const { GetUser, isLoadingUser, userData } = useGetUser();
-  const { userTag } = useTag(userData[0]?.displayName);
-  const dispatch = useDispatch();
-  const handleOpen = () => dispatch(TweetOpenModal());
-  const Modal = useSelector((state: any) => state.modal.TweetShowModal);
-
   const { currentUser } = useAuth();
+
+  const handleOpen = () => dispatch(TweetOpenModal());
+  const lightTheme = useSelector((state: any) => state.theme.lightModeState);
+  const Modal = useSelector((state: any) => state.modal.TweetShowModal);
+  const dispatch = useDispatch();
+
+  const { userTag } = useTag(userData[0]?.displayName);
   GetUser(currentUser?.uid);
 
   //menu

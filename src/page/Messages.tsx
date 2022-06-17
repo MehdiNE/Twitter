@@ -1,7 +1,6 @@
 import { collection, onSnapshot } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { dimModeState, lightModeState } from "../atoms/modalAtom";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import MessagesFeed from "../components/Messages/MessagesFeed";
 import Sidebar from "../components/sidebar/Sidebar";
 import { db } from "../firebase/config";
@@ -9,8 +8,9 @@ import { db } from "../firebase/config";
 function Messages() {
   const [users, setUsers] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
-  const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
-  const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
+
+  const lightTheme = useSelector((state: any) => state.theme.lightModeState);
+  const dimTheme = useSelector((state: any) => state.theme.dimModeState);
 
   useEffect(() => {
     setIsLoading(true);

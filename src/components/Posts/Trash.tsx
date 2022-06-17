@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { db } from "../../firebase/config";
-import { openAlert, severityAlert, messageAlert } from "../../store/AlertSlice";
+import { allAlert } from "../../store/AlertSlice";
 
 interface Props {
   post: string;
@@ -22,9 +22,14 @@ function Trash({ post, id }: Props) {
   const handleDelete = () => {
     deleteDoc(doc(db, "posts", id));
     navigate("/");
-    dispatch(openAlert());
-    dispatch(severityAlert("error"));
-    dispatch(messageAlert("Tweet removed from database"));
+
+    dispatch(
+      allAlert({
+        alertState: true,
+        alertSeverity: "error",
+        alertMessage: "Tweet removed from database",
+      })
+    );
   };
 
   return (

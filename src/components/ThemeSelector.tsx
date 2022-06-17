@@ -4,12 +4,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useRecoilState } from "recoil";
-import {
-  darkModeState,
-  dimModeState,
-  lightModeState,
-} from "../atoms/modalAtom";
 import { IoColorPaletteSharp } from "react-icons/io5";
 import {
   FormControl,
@@ -20,13 +14,14 @@ import {
 } from "@mui/material";
 import MediaQuery from "react-responsive";
 import { BsBrush } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import { themeState } from "../store/ThemeSlice";
 
 export default function ThemeSelector() {
   const [open, setOpen] = useState(false);
-  // const [isOpen, setIsOpen] = useRecoilState(themeDialogState);
-  const [darkTheme, setDarkTheme] = useRecoilState(darkModeState);
-  const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
-  const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
+  const lightTheme = useSelector((state: any) => state.theme.lightModeState);
+
+  const dispatch = useDispatch();
 
   const [value, setValue] = useState("Lights out");
 
@@ -96,9 +91,13 @@ export default function ThemeSelector() {
                           <Radio
                             sx={{ color: "gray" }}
                             onClick={() => {
-                              setDarkTheme(true);
-                              setLightTheme(false);
-                              setDimTheme(false);
+                              dispatch(
+                                themeState({
+                                  dark: true,
+                                  light: false,
+                                  dim: false,
+                                })
+                              );
                             }}
                           />
                         }
@@ -111,9 +110,13 @@ export default function ThemeSelector() {
                         control={
                           <Radio
                             onClick={() => {
-                              setDarkTheme(false);
-                              setLightTheme(false);
-                              setDimTheme(true);
+                              dispatch(
+                                themeState({
+                                  dark: false,
+                                  light: false,
+                                  dim: true,
+                                })
+                              );
                             }}
                           />
                         }
@@ -126,9 +129,13 @@ export default function ThemeSelector() {
                         control={
                           <Radio
                             onClick={() => {
-                              setDarkTheme(false);
-                              setLightTheme(true);
-                              setDimTheme(false);
+                              dispatch(
+                                themeState({
+                                  dark: false,
+                                  light: true,
+                                  dim: false,
+                                })
+                              );
                             }}
                           />
                         }

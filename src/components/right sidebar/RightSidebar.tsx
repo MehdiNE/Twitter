@@ -2,20 +2,18 @@ import { Avatar } from "@mui/material";
 import { collection, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
-import { useRecoilState } from "recoil";
-import { dimModeState, lightModeState } from "../../atoms/modalAtom";
 import { db } from "../../firebase/config";
-import { messageAlert, openAlert, severityAlert } from "../../store/AlertSlice";
-// import MessagesDrawer from "../Messages/MessagesDrawer";
+import { allAlert } from "../../store/AlertSlice";
 
 const RightSidebar = React.memo(() => {
   const [users, setUsers] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
-  const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
-  const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
+
+  const lightTheme = useSelector((state: any) => state.theme.lightModeState);
+  const dimTheme = useSelector((state: any) => state.theme.dimModeState);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -110,12 +108,14 @@ const RightSidebar = React.memo(() => {
                   }`}
                   onClick={(e) => {
                     e.stopPropagation();
-                    dispatch(openAlert());
-                    dispatch(severityAlert("warning"));
+
                     dispatch(
-                      messageAlert(
-                        "follow/unfollow functionality is not ready yet!"
-                      )
+                      allAlert({
+                        alertState: true,
+                        alertSeverity: "warning",
+                        alertMessage:
+                          "follow/unfollow functionality is not ready yet!",
+                      })
                     );
                   }}
                 >

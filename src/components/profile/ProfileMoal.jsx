@@ -15,7 +15,7 @@ import {
   uploadBytesResumable,
   uploadString,
 } from "firebase/storage";
-import { openAlert, severityAlert, messageAlert } from "../../store/AlertSlice";
+import { allAlert } from "../../store/AlertSlice";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -125,9 +125,15 @@ function ProfileMoal({ userData }) {
 
     setLoading(false);
     dispatch(profileCloseModal());
-    dispatch(openAlert());
-    dispatch(severityAlert("success"));
-    dispatch(messageAlert("changes are successfully applied"));
+
+    dispatch(
+      allAlert({
+        alertState: true,
+        alertSeverity: "success",
+        alertMessage: "changes are successfully applied",
+      })
+    );
+
     // window.location.reload(true);
   };
 

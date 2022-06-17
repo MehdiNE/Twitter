@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   BsEyeFill,
   BsEyeSlashFill,
@@ -235,4 +235,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default React.memo(Signup);

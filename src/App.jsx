@@ -1,32 +1,35 @@
+import React, { Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 import "./styles/global.css";
 import ForgetPassword from "./page/ForgetPassword";
 import { Offline, Online } from "react-detect-offline";
-import { useRecoilState } from "recoil";
-import { darkModeState } from "./atoms/modalAtom";
 import { useSelector } from "react-redux";
 import AlertComponent from "./UI/Alert";
 import MediaQuery from "react-responsive";
-import MobileBottomNavigation from "./components/MobileBottomNavigation";
-import TransitionsModal from "./components/ModalPage";
 import Signup from "./page/Signup";
 import Login from "./page/Login";
 
-import Home from "./page/Home";
-import Profile from "./page/Profile";
 import Bookmarks from "./page/Bookmarks";
 import Messages from "./page/Messages";
 import PostPage from "./page/PostPage";
-// const Home = React.lazy(() => import("./page/Home"));
-// const Profile = React.lazy(() => import("./page/Profile"));
-// const Bookmarks = React.lazy(() => import("./page/Bookmarks"));
-// const Messages = React.lazy(() => import("./page/Messages"));
-// const PostPage = React.lazy(() => import("./page/PostPage"));
 
+const Home = React.lazy(() => import("./page/Home"));
+const Profile = React.lazy(() => import("./page/Profile"));
+const MobileBottomNavigation = React.lazy(() =>
+  import("./components/MobileBottomNavigation")
+);
+const TransitionsModal = React.lazy(() => import("./components/ModalPage"));
+
+//convert all code to redux toolkit
+//implemant pwa
+//maximum image size
+//custom hooks
+//fix country in profile
 function App() {
   const { currentUser } = useAuth();
-  const [darkTheme, setDarkTheme] = useRecoilState(darkModeState);
+
+  const darkTheme = useSelector((state) => state.theme.darkModeState);
   const modal = useSelector((state) => state.modal.showModal);
 
   return (
@@ -64,24 +67,46 @@ function App() {
 
           <Route
             path="/profile/:id"
-            element={currentUser ? <Profile /> : <Navigate to="/login" />}
+            element={
+              currentUser ? (
+                <Suspense fallback={<></>}>
+                  <Profile />
+                </Suspense>
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
           />
           <Route path="/resetpassword" element={<ForgetPassword />} />
           <Route path="/messages/:id" element={<Messages />} />
           <Route path="/bookmarks" element={<Bookmarks />} />
           <Route
             path="*"
-            element={currentUser ? <Home /> : <Navigate to="/login" />}
+            element={
+              currentUser ? (
+                <Suspense fallback={<p>Loading...</p>}>
+                  <Home />
+                </Suspense>
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
           />
         </Routes>
       </Online>
 
       <MediaQuery maxWidth={700}>
-        <MobileBottomNavigation />
+        <Suspense fallback={<></>}>
+          <MobileBottomNavigation />
+        </Suspense>
       </MediaQuery>
 
       <AlertComponent />
-      {modal && <TransitionsModal />}
+      {modal && (
+        <Suspense fallback={<></>}>
+          <TransitionsModal />
+        </Suspense>
+      )}
     </div>
   );
 }

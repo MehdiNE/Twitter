@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { dimModeState, lightModeState } from "../atoms/modalAtom";
+import React, { Suspense, useEffect, useState } from "react";
 import {
   collection,
   onSnapshot,
@@ -8,23 +6,32 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import ProfileFeed from "../components/profile/ProfileFeed";
-import ProfileMoal from "../components/profile/ProfileMoal";
 import Sidebar from "../components/sidebar/Sidebar";
 import { db } from "../firebase/config";
 import { useAuth } from "../contexts/AuthContext";
 import { useParams } from "react-router-dom";
-import RightSidebar from "../components/right sidebar/RightSidebar";
 import { useSelector } from "react-redux";
+
+const RightSidebar = React.lazy(
+  () => import("../components/right sidebar/RightSidebar")
+);
+const ProfileFeed = React.lazy(
+  () => import("../components/profile/ProfileFeed")
+);
+const ProfileMoal = React.lazy(
+  () => import("../components/profile/ProfileMoal")
+);
 
 function Profile() {
   const [posts, setPosts] = useState<any>([]);
   const [users, setUsers] = useState<any>([]);
   const [loading, setLoading] = useState(false);
-  const modal = useSelector((state: any) => state.modal.profileShowModal);
   const { currentUser } = useAuth();
-  const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
-  const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
+
+  const modal = useSelector((state: any) => state.modal.profileShowModal);
+  const lightTheme = useSelector((state: any) => state.theme.lightModeState);
+  const dimTheme = useSelector((state: any) => state.theme.dimModeState);
+
   let { id }: any = useParams();
 
   const userData = users.map((data: any) => data.data());
@@ -70,19 +77,27 @@ function Profile() {
       } ${lightTheme && "bg-white text-black"}`}
     >
       <Sidebar />
-      <ProfileFeed
-        userData={userData}
-        posts={posts}
-        loading={loading}
-        currentUser={currentUser}
-        dimTheme={dimTheme}
-        lightTheme={lightTheme}
-      />
-      <RightSidebar />
 
-      {modal && <ProfileMoal userData={userData} />}
+      <Suspense fallback={<p>Loading</p>}>
+        <ProfileFeed
+          userData={userData}
+          posts={posts}
+          loading={loading}
+          currentUser={currentUser}
+          dimTheme={dimTheme}
+          lightTheme={lightTheme}
+        />
+      </Suspense>
+
+      <Suspense fallback={<p>Loading</p>}>
+        <RightSidebar />
+      </Suspense>
+
+      <Suspense fallback={<p>Loading</p>}>
+        {modal && <ProfileMoal userData={userData} />}
+      </Suspense>
     </main>
   );
 }
 
-export default Profile;
+export default React.memo(Profile);

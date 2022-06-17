@@ -1,6 +1,5 @@
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { lightModeState } from "../../atoms/modalAtom";
 
 interface Props {
   text: string;
@@ -9,7 +8,7 @@ interface Props {
 }
 
 function SidebarList({ text, Icon, link }: Props) {
-  const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
+  const lightTheme = useSelector((state: any) => state.theme.lightModeState);
 
   return (
     <div

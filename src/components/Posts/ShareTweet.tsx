@@ -5,7 +5,7 @@ import { HiOutlineShare } from "react-icons/hi";
 import { useClipboard } from "use-clipboard-copy";
 import { RWebShare } from "react-web-share";
 import { useDispatch } from "react-redux";
-import { openAlert, severityAlert, messageAlert } from "../../store/AlertSlice";
+import { allAlert } from "../../store/AlertSlice";
 
 function ShareTweet({ id }: any) {
   const clipboard = useClipboard();
@@ -14,9 +14,14 @@ function ShareTweet({ id }: any) {
   const handleCopy = React.useCallback(() => {
     const url = `http://localhost:3000/${id}`;
     clipboard.copy(url);
-    dispatch(openAlert());
-    dispatch(severityAlert("success"));
-    dispatch(messageAlert("Copied to clipboard"));
+
+    dispatch(
+      allAlert({
+        alertState: true,
+        alertSeverity: "success",
+        alertMessage: "Copied to clipboard",
+      })
+    );
   }, [clipboard, dispatch, id]);
 
   //menu

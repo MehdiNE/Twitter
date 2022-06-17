@@ -1,8 +1,6 @@
 import { onSnapshot, collection, query, where } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
-import { useRecoilState } from "recoil";
-import { dimModeState, lightModeState } from "../atoms/modalAtom";
 import Post from "../components/Posts/Post";
 import RightSidebar from "../components/right sidebar/RightSidebar";
 import Sidebar from "../components/sidebar/Sidebar";
@@ -11,10 +9,12 @@ import { db } from "../firebase/config";
 import MediaQuery from "react-responsive";
 import { BsArrowLeft } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Bookmarks() {
-  const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
-  const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
+  const lightTheme = useSelector((state: any) => state.theme.lightModeState);
+  const dimTheme = useSelector((state: any) => state.theme.dimModeState);
+
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -70,13 +70,11 @@ function Bookmarks() {
           } ${dimTheme && "bg-[#15202b] bg-opacity-80"}`}
         >
           <div className="flex items-center space-x-7 text-sm sm:text-xl font-bold leading-tight">
-            <div>
-              <MediaQuery maxWidth={700}>
-                <Link to="/">
-                  <BsArrowLeft />
-                </Link>
-              </MediaQuery>
-            </div>
+            <MediaQuery maxWidth={700}>
+              <Link to="/">
+                <BsArrowLeft />
+              </Link>
+            </MediaQuery>
             <div>
               <h3>Bookmarks</h3>
               <p className="inline-block ml-1 align-text-bottom text-sm text-gray-500">
@@ -115,4 +113,4 @@ function Bookmarks() {
   );
 }
 
-export default Bookmarks;
+export default React.memo(Bookmarks);

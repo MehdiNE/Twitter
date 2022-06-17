@@ -7,13 +7,12 @@ import { BsBookmark, BsPerson } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { Paper } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext";
-import { useRecoilState } from "recoil";
-import { lightModeState, dimModeState } from "../atoms/modalAtom";
+import { useSelector } from "react-redux";
 
 export default function MobileBottomNavigation() {
   const [value, setValue] = React.useState(0);
-  const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
-  const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
+  const lightTheme = useSelector((state: any) => state.theme.lightModeState);
+  const dimTheme = useSelector((state: any) => state.theme.dimModeState);
 
   const navigate = useNavigate();
 

@@ -2,7 +2,7 @@ import React from "react";
 import { Snackbar } from "@mui/material";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { useDispatch, useSelector } from "react-redux";
-import { closeAlert } from "../store/AlertSlice";
+import { allAlert } from "../store/AlertSlice";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -25,7 +25,11 @@ function AlertComponent() {
       return;
     }
 
-    dispatch(closeAlert());
+    dispatch(
+      allAlert({
+        alertState: false,
+      })
+    );
   };
   return (
     <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>

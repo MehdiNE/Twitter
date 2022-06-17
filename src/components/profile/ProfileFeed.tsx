@@ -14,7 +14,7 @@ import Popover from "@mui/material/Popover";
 //redux
 import { useDispatch } from "react-redux";
 import { profileOpenModal } from "../../store/modalSlice";
-import { openAlert, severityAlert, messageAlert } from "../../store/AlertSlice";
+import { allAlert } from "../../store/AlertSlice";
 
 interface Props {
   userData: {
@@ -164,12 +164,14 @@ function ProfileFeed({
                     className="relative rounded-full inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
                     onClick={(e) => {
                       e.stopPropagation();
-                      dispatch(openAlert());
-                      dispatch(severityAlert("warning"));
+
                       dispatch(
-                        messageAlert(
-                          "follow/unfollow functionality is not ready yet!"
-                        )
+                        allAlert({
+                          alertState: true,
+                          alertSeverity: "warning",
+                          alertMessage:
+                            "follow/unfollow functionality is not ready yet!",
+                        })
                       );
                     }}
                   >

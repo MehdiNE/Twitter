@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar/Sidebar";
-import { dimModeState, lightModeState } from "../atoms/modalAtom";
-import { useRecoilState } from "recoil";
 import TransitionsModal from "../components/ModalPage";
 import Comment from "../components/Comment";
 import {
@@ -20,14 +18,15 @@ import { useSelector } from "react-redux";
 import { ClipLoader } from "react-spinners";
 
 function PostPage() {
-  const modal = useSelector((state: any) => state.modal.showModal);
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [lightTheme, setLightTheme] = useRecoilState(lightModeState);
-  const [dimTheme, setDimTheme] = useRecoilState(dimModeState);
-  const navigate = useNavigate();
 
+  const modal = useSelector((state: any) => state.modal.showModal);
+  const lightTheme = useSelector((state: any) => state.theme.lightModeState);
+  const dimTheme = useSelector((state: any) => state.theme.dimModeState);
+
+  const navigate = useNavigate();
   let { id }: any = useParams();
 
   useEffect(() => {
@@ -117,4 +116,4 @@ function PostPage() {
   );
 }
 
-export default PostPage;
+export default React.memo(PostPage);

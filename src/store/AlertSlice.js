@@ -10,21 +10,13 @@ export const alertSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    openAlert: (state) => {
-      state.showAlert = true;
-    },
-    closeAlert: (state) => {
-      state.showAlert = false;
-    },
-    severityAlert: (state, actions) => {
-      state.showSeverityAlert = actions.payload;
-    },
-    messageAlert: (state, actions) => {
-      state.showMessageAlert = actions.payload;
+    allAlert: (state, actions) => {
+      state.showAlert = actions.payload.alertState;
+      state.showSeverityAlert = actions.payload.alertSeverity;
+      state.showMessageAlert = actions.payload.alertMessage;
     },
   },
 });
-export const { openAlert, closeAlert, severityAlert, messageAlert } =
-  alertSlice.actions;
+export const { allAlert } = alertSlice.actions;
 
 export default alertSlice.reducer;
