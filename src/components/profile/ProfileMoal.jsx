@@ -36,7 +36,7 @@ function ProfileMoal({ userData }) {
   const dispatch = useDispatch();
 
   // location
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(userData[0]?.location?.label);
   let options = useMemo(() => countryList().getData(), []);
   const changeHandler = (value) => {
     setValue(value);
@@ -382,16 +382,3 @@ function ProfileMoal({ userData }) {
 }
 
 export default ProfileMoal;
-// const [header, setHeader] = useState();
-// const headerFilePickerRef = useRef();
-
-// const addHeader = (e) => {
-//   const reader = new FileReader();
-//   if (e.target.files[0]) {
-//     reader.readAsDataURL(e.target.files[0]);
-//   }
-
-//   reader.onload = (readerEvent) => {
-//     setHeader(readerEvent.target.result);
-//   };
-// };

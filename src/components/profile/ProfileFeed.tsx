@@ -119,7 +119,7 @@ function ProfileFeed({
         </div>
       ) : (
         <>
-          <div className="w-full h-52">
+          <div className="w-full h-36 sm:h-52">
             <img
               src={userData[0]?.headerPic}
               alt="banner"
@@ -137,9 +137,13 @@ function ProfileFeed({
                 sx={{
                   width: "140px",
                   height: "140px",
+                  "@media (max-width:780px)": {
+                    width: "100px",
+                    height: "100px",
+                  },
                 }}
                 alt={userData[0]?.displayName}
-                className={`-mt-20 border-4 border-black ${
+                className={`-mt-14 sm:-mt-20 border-4 border-black ${
                   lightTheme && "border-white"
                 }`}
               />
@@ -150,7 +154,7 @@ function ProfileFeed({
                     className={`relative rounded-full inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800`}
                   >
                     <span
-                      className={`relative rounded-full px-5 py-2.5 transition-all ease-in duration-75 dark:bg-black group-hover:bg-opacity-0 ${
+                      className={`relative rounded-full px-5 py-2 sm:py-2.5 transition-all ease-in duration-75 dark:bg-black group-hover:bg-opacity-0 ${
                         dimTheme && "bg-[#15202b] text-white"
                       } ${lightTheme && "bg-white"}`}
                     >
@@ -176,7 +180,7 @@ function ProfileFeed({
                     }}
                   >
                     <span
-                      className={`relative rounded-full px-5 py-2.5 transition-all ease-in duration-75 dark:bg-black group-hover:bg-opacity-0 ${
+                      className={`relative rounded-full px-5 py-1.5 sm:py-2.5 transition-all ease-in duration-75 dark:bg-black group-hover:bg-opacity-0 ${
                         dimTheme && "bg-[#15202b] text-white"
                       } ${lightTheme && "bg-white"}`}
                     >

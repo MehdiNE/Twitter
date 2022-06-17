@@ -21,11 +21,9 @@ const MobileBottomNavigation = React.lazy(() =>
 );
 const TransitionsModal = React.lazy(() => import("./components/ModalPage"));
 
-//convert all code to redux toolkit
 //implemant pwa
-//maximum image size
 //custom hooks
-//fix country in profile
+
 function App() {
   const { currentUser } = useAuth();
 
