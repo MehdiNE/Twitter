@@ -2,9 +2,11 @@ import { Avatar } from "@mui/material";
 import React from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 function MessagesFeed({ users, dimTheme, lightTheme }: any) {
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
   return (
     <div
@@ -30,33 +32,6 @@ function MessagesFeed({ users, dimTheme, lightTheme }: any) {
         />
         <p className="text-xl font-bold">Messages</p>
       </div>
-
-      {users?.map((result: any, index: any) => (
-        <div
-          className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-4 cursor-pointer transition duration-200 ease-out flex items-center"
-          key={index}
-          onClick={() => {
-            navigate(`/messages/${result?.id}`);
-          }}
-        >
-          <Avatar src={result.avatar} alt={result.displayName} />
-          <div className="ml-4 leading-5 group">
-            <h4 className="font-bold group-hover:underline">
-              {result.displayName}
-            </h4>
-            <h5 className="text-gray-500 text-[15px]">
-              @{result?.displayName?.split(" ")?.join("")?.toLocaleLowerCase()}
-            </h5>
-          </div>
-          <button
-            className={`ml-auto  dark:  dark:  rounded-full font-bold text-sm py-1.5 px-3.5 ${
-              lightTheme ? "bg-black text-white" : "bg-white text-black"
-            }`}
-          >
-            message
-          </button>
-        </div>
-      ))}
     </div>
   );
 }

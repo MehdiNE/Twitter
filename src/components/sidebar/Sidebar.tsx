@@ -23,6 +23,7 @@ import { TweetOpenModal } from "../../store/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import TweetModal from "../tweetModal";
 import { Link } from "react-router-dom";
+import MessagesModal from "../Messages/MessagesModal";
 
 const Sidebar = React.memo(() => {
   const { logout, error, isLoading } = useLogout();
@@ -58,11 +59,12 @@ const Sidebar = React.memo(() => {
         <SidebarList text="Home" Icon={HiHome} link="/" />
         <SidebarList text="Explore" Icon={HiHashtag} />
         {/* <SidebarList text="Notifications" Icon={HiOutlineBell} /> */}
-        <SidebarList
+        {/* <SidebarList
           text="Messages"
           Icon={HiOutlineInbox}
           link={`/messages/${userData[0]?.id}`}
-        />
+        /> */}
+        <MessagesModal />
         <SidebarList
           text="Bookmarks"
           Icon={HiOutlineBookmark}
